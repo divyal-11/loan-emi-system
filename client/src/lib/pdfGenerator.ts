@@ -1,3 +1,7 @@
+/**
+ * LoanFlex PDF Export Module
+ * Generates downloadable PDF sanction certificates and payment receipts.
+ */
 import { jsPDF } from "jspdf";
 import { LoanItem } from "../app/dashboard/page";
 import { RepaymentItem } from "../components/borrower/RepaymentScheduleModal";
