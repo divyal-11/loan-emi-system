@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { api, ApiError } from "../../lib/api";
-import { X, Calendar, CheckCircle2, Clock, AlertTriangle, Loader2, IndianRupee } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import { generatePaymentReceipt } from "../../lib/pdfGenerator";
+import { X, Calendar, CheckCircle2, Clock, AlertTriangle, Loader2, IndianRupee, Download } from "lucide-react";
 
 export interface RepaymentItem {
   id: string;
@@ -29,6 +31,7 @@ export function RepaymentScheduleModal({
   onClose,
   onLoanUpdated,
 }: RepaymentScheduleModalProps) {
+  const { user } = useAuth();
   const [repayments, setRepayments] = useState<RepaymentItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [payingId, setPayingId] = useState<string | null>(null);
@@ -196,9 +199,14 @@ export function RepaymentScheduleModal({
                               <span>{isPayingThis ? "Paying..." : "Pay EMI"}</span>
                             </button>
                           ) : (
-                            <span className="text-xs text-slate-500 font-mono">
-                              Paid {new Date(rep.paidAt!).toLocaleDateString("en-IN")}
-                            </span>
+                            <button
+                              onClick={() => user && generatePaymentReceipt(rep, 0, user)}
+                              className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-medium transition-colors"
+                              title="Download PDF Receipt"
+                            >
+                              <Download className="w-3.5 h-3.5 text-emerald-400" />
+                              <span>Receipt</span>
+                            </button>
                           )}
                         </td>
                       </tr>

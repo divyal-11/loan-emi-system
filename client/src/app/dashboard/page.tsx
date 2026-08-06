@@ -5,6 +5,8 @@ import { ProtectedRoute } from "../../components/ProtectedRoute";
 import { ApplyLoanModal } from "../../components/borrower/ApplyLoanModal";
 import { RepaymentScheduleModal } from "../../components/borrower/RepaymentScheduleModal";
 import { api, ApiError } from "../../lib/api";
+import { useAuth } from "../../context/AuthContext";
+import { generateSanctionLetter } from "../../lib/pdfGenerator";
 import {
   PlusCircle,
   Clock,
@@ -18,6 +20,7 @@ import {
   Eye,
   CreditCard,
   Building,
+  Download,
 } from "lucide-react";
 
 export interface LoanItem {
@@ -34,6 +37,7 @@ export interface LoanItem {
 }
 
 export default function BorrowerDashboardPage() {
+  const { user } = useAuth();
   const [loans, setLoans] = useState<LoanItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -244,13 +248,23 @@ export default function BorrowerDashboardPage() {
                           </td>
                           <td className="px-6 py-4 text-right">
                             {["DISBURSED", "CLOSED"].includes(loan.status) ? (
-                              <button
-                                onClick={() => setSelectedLoanIdForSchedule(loan.id)}
-                                className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 font-medium text-xs transition-colors"
-                              >
-                                <Eye className="w-3.5 h-3.5" />
-                                <span>Schedule & Pay</span>
-                              </button>
+                              <div className="flex items-center justify-end space-x-2">
+                                <button
+                                  onClick={() => user && generateSanctionLetter(loan, user)}
+                                  className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium text-xs transition-colors"
+                                  title="Download Sanction Letter PDF"
+                                >
+                                  <Download className="w-3.5 h-3.5 text-indigo-400" />
+                                  <span>Sanction Letter</span>
+                                </button>
+                                <button
+                                  onClick={() => setSelectedLoanIdForSchedule(loan.id)}
+                                  className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 font-medium text-xs transition-colors"
+                                >
+                                  <Eye className="w-3.5 h-3.5" />
+                                  <span>Schedule & Pay</span>
+                                </button>
+                              </div>
                             ) : (
                               <span className="text-xs text-slate-500 font-mono">—</span>
                             )}
