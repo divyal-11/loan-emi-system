@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { approve, reject, getPending, rejectSchema } from "../controllers/adminController";
+import { approve, reject, getPending, getAuditLogs, rejectSchema } from "../controllers/adminController";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { roleMiddleware } from "../middleware/roleMiddleware";
 import { validateRequest } from "../middleware/validateRequest";
@@ -11,6 +11,9 @@ const adminGuard = [authMiddleware, roleMiddleware("admin")];
 
 // GET /api/admin/loans/pending — list all PENDING applications
 router.get("/loans/pending", ...adminGuard, getPending);
+
+// GET /api/admin/audit/:loanId — view audit trail for a loan
+router.get("/audit/:loanId", ...adminGuard, getAuditLogs);
 
 // PATCH /api/admin/loans/:id/approve — approve a PENDING loan
 router.patch("/loans/:id/approve", ...adminGuard, approve);

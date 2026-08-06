@@ -189,3 +189,28 @@ export const reject = asyncHandler(async (req: Request, res: Response): Promise<
 
   res.status(200).json({ success: true, data: formatLoan(loan) });
 });
+
+/**
+ * GET /api/admin/audit/:loanId — admin only
+ * Returns the full audit trail for a loan, ordered chronologically.
+ */
+export const getAuditLogs = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const loanId = req.params["loanId"] as string;
+  await findLoanOrThrow(loanId);
+
+  const { AuditLog } = await import("../models/AuditLog");
+  const logs = await AuditLog.find({ loanId }).sort({ timestamp: 1 });
+
+  res.status(200).json({
+    success: true,
+    data: logs.map((log) => ({
+      id: log._id.toString(),
+      loanId: log.loanId.toString(),
+      event: log.event,
+      actor: log.actor.toString(),
+      metadata: log.metadata,
+      timestamp: log.timestamp.toISOString(),
+    })),
+  });
+});
+

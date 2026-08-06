@@ -6,6 +6,7 @@ export type AuditEvent =
   | "REJECTED"
   | "DISBURSED"
   | "EMI_PAID"
+  | "CLOSED"
   | "DEFAULTED";
 
 export interface IAuditLog {
@@ -21,7 +22,7 @@ const auditLogSchema = new Schema<IAuditLog>(
     loanId: { type: Schema.Types.ObjectId, ref: "LoanApplication", required: true },
     event: {
       type: String,
-      enum: ["APPLIED", "APPROVED", "REJECTED", "DISBURSED", "EMI_PAID", "DEFAULTED"] as AuditEvent[],
+      enum: ["APPLIED", "APPROVED", "REJECTED", "DISBURSED", "EMI_PAID", "CLOSED", "DEFAULTED"] as AuditEvent[],
       required: true,
     },
     actor: { type: Schema.Types.ObjectId, ref: "User", required: true },
