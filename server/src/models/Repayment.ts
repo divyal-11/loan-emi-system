@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-export type RepaymentStatus = "PENDING" | "PAID";
+export type RepaymentStatus = "UPCOMING" | "PAID" | "OVERDUE";
 
 export interface IRepayment {
   loanId: mongoose.Types.ObjectId;
@@ -23,9 +23,9 @@ const repaymentSchema = new Schema<IRepayment>(
     totalAmount: { type: Number, required: true },
     status: {
       type: String,
-      enum: ["PENDING", "PAID"] as RepaymentStatus[],
+      enum: ["UPCOMING", "PAID", "OVERDUE"] as RepaymentStatus[],
       required: true,
-      default: "PENDING",
+      default: "UPCOMING",
     },
     paidAt: { type: Date, default: null },
   },

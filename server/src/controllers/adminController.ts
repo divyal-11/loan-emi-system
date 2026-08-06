@@ -129,7 +129,7 @@ export const approve = asyncHandler(async (req: Request, res: Response): Promise
     principalComponent: inst.principalComponent,
     interestComponent: inst.interestComponent,
     totalAmount: inst.totalAmount,
-    status: "PENDING" as const,
+    status: "UPCOMING" as const,
     paidAt: null,
   }));
 
