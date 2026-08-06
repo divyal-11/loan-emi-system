@@ -10,6 +10,12 @@ import { env } from "../config/env";
 
 const SALT_ROUNDS = 12;
 
+// Pre-computed bcrypt hash of a dummy password used in login when the email
+// is not found. Running compare() against this ensures the response time is
+// the same whether the email exists or not, preventing user-enumeration via
+// timing attacks. The hash never matches any real user's password.
+const DUMMY_HASH = "$2b$12$invalidhashthatisfakeanddoesnotmatchanythingXXXXXXXX";
+
 // ─── Zod schemas ──────────────────────────────────────────────────────────────
 // Exported so authRoutes can pass them to validateRequest middleware.
 
@@ -41,7 +47,7 @@ export const signup = asyncHandler(async (req: Request, res: Response): Promise<
   const existing = await User.findOne({ email });
   if (existing) {
     throw new AppError(
-      ErrorCodes.VALIDATION_ERROR,
+      ErrorCodes.EMAIL_ALREADY_EXISTS,
       409,
       "An account with that email already exists.",
     );
@@ -71,9 +77,12 @@ export const login = asyncHandler(async (req: Request, res: Response): Promise<v
   const { email, password } = req.body as LoginBody;
 
   const user = await User.findOne({ email });
-  const passwordMatch = user ? await bcrypt.compare(password, user.passwordHash) : false;
+  // Always run bcrypt.compare — if the user doesn't exist, compare against
+  // DUMMY_HASH (which never matches). This keeps response time constant
+  // regardless of whether the email is registered, preventing timing attacks.
+  const passwordMatch = await bcrypt.compare(password, user?.passwordHash ?? DUMMY_HASH);
 
-  // Check both conditions after the bcrypt call to avoid timing-based user enumeration
+  // Check both conditions after the unconditional bcrypt call
   if (!user || !passwordMatch) {
     throw new AppError(ErrorCodes.UNAUTHORIZED, 401, "Invalid email or password.");
   }

@@ -107,12 +107,13 @@ describe("POST /api/auth/signup", () => {
     expect(res.body.error.code).toBe("VALIDATION_ERROR");
   });
 
-  it("returns 409 when email already exists", async () => {
+  it("returns 409 EMAIL_ALREADY_EXISTS when email is already registered", async () => {
     await request(app).post("/api/auth/signup").send(BORROWER);
     const res = await request(app).post("/api/auth/signup").send(BORROWER);
 
     expect(res.status).toBe(409);
     expect(res.body.success).toBe(false);
+    expect(res.body.error.code).toBe("EMAIL_ALREADY_EXISTS");
   });
 });
 
