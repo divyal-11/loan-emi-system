@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: loan-emi-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: loan-emi-system
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: loan-emi-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/loan-emi-system
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:
