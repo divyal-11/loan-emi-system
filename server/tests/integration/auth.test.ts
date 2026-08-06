@@ -72,7 +72,7 @@ describe("POST /api/auth/signup", () => {
   });
 
   it("defaults to 'borrower' when role is omitted", async () => {
-    const { role: _role, ...withoutRole } = BORROWER;
+    const withoutRole = { name: BORROWER.name, email: BORROWER.email, password: BORROWER.password };
     const res = await request(app).post("/api/auth/signup").send(withoutRole);
 
     expect(res.status).toBe(201);
