@@ -1,6 +1,6 @@
 # 🏦 LoanFlex — Automated Loan Processing & EMI Engine
 
-[![CI Pipeline](https://github.com/divyal-11/loan-emi-system/actions/workflows/ci.yml/badge.svg)](https://github.com/divyal-11/loan-emi-system/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/divyal-11/loan-emi-system/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/divyal-11/loan-emi-system/actions/workflows/ci.yml)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?logo=nodedotjs)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript)](https://www.typescriptlang.org)
 [![Next.js](https://img.shields.io/badge/Next.js-16.x-000000?logo=nextdotjs)](https://nextjs.org)
