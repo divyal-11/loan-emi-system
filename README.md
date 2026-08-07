@@ -83,8 +83,22 @@ if (repayment.status === "UPCOMING" && repayment.dueDate < new Date()) {
 ```
 This avoids expensive background polling jobs or database write-churn while guaranteeing 100% accurate status reporting to clients.
 
-### 4. Immutable Audit Event Stream
-Every state transition (`APPLIED` → `APPROVED` → `DISBURSED` → `EMI_PAID` → `CLOSED`) writes an un-updatable `AuditLog` entry in the same database transaction.
+### 5. PDF Sanction Letter & Payment Receipt Exporter (`pdfGenerator.ts`)
+Generates official, client-side PDF documents featuring digital verification seals and transaction reference IDs:
+- **Loan Sanction & Disbursal Certificate**: Official approval document with applicant details, terms, and SHA-256 verification hash.
+- **EMI Payment Receipt**: Instant payment confirmation with itemized principal/interest breakdown and `STATUS: PAID` stamp.
+
+---
+
+## 🔑 Demo Test Credentials
+
+When running `npm run seed`, the database is populated with the following ready-to-use accounts:
+
+| Role | Email | Password | Pre-loaded Data |
+| :--- | :--- | :--- | :--- |
+| **Borrower** | `asha@example.com` | `password123` | 1 Disbursed Loan (1 EMI Paid), 1 Rejected Loan |
+| **Borrower** | `ravi@example.com` | `password123` | 1 Pending Loan Application |
+| **Admin** | `admin@example.com` | `adminpass123` | Full admin privileges for approvals & audit logs |
 
 ---
 
@@ -104,6 +118,16 @@ Every state transition (`APPLIED` → `APPROVED` → `DISBURSED` → `EMI_PAID` 
 | **GET** | `/api/repayments/:loanId` | Shared | Fetch EMI schedule with read-time `OVERDUE` computation |
 | **PATCH** | `/api/repayments/:id/pay` | Borrower | Mark EMI as paid (auto-closes loan when final EMI paid) |
 | **GET** | `/api/admin/audit/:loanId` | Admin | Fetch full, ordered audit trail for a loan |
+
+---
+
+## 🚀 Cloud Deployment & Containerization
+
+LoanFlex is fully configured for zero-downtime cloud deployment:
+- **Cloud Deployment Guide**: Detailed step-by-step instructions in [`docs/deployment-guide.md`](file:///c:/Users/divya/Projects/loan-emi-system/docs/deployment-guide.md).
+- **Docker Production Container**: [`server/Dockerfile`](file:///c:/Users/divya/Projects/loan-emi-system/server/Dockerfile) (Multi-stage Node.js build).
+- **Render.com Blueprint**: [`server/render.yaml`](file:///c:/Users/divya/Projects/loan-emi-system/server/render.yaml) (Express API backend).
+- **Vercel Configuration**: [`client/vercel.json`](file:///c:/Users/divya/Projects/loan-emi-system/client/vercel.json) (Next.js 16 App Router).
 
 ---
 
