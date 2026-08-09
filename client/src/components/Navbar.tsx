@@ -21,20 +21,20 @@ export function Navbar() {
   const isAdmin = user.role === "admin";
 
   return (
-    <nav className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 text-slate-100 font-sans">
+    <nav className="sticky top-0 z-40 bg-[#070c18]/90 backdrop-blur-md border-b border-slate-800/90 text-slate-100 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Groww Purple Logo */}
+          {/* Cyber Teal Logo */}
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-2xl border border-purple-400/30 shadow-lg shadow-purple-950/60">
-              <Landmark className="w-6 h-6" />
+            <div className="p-2 bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 rounded-2xl border border-teal-300/40 shadow-lg shadow-teal-950/80">
+              <Landmark className="w-6 h-6 text-slate-950" />
             </div>
             <div>
-              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-teal-100 to-emerald-400 bg-clip-text text-transparent">
                 LoanFlex
               </span>
-              <span className="text-xs block text-purple-400/90 font-mono font-medium tracking-wider">FINTECH SUITE</span>
+              <span className="text-xs block text-teal-400/90 font-mono font-semibold tracking-wider">FINTECH SUITE</span>
             </div>
           </div>
 
@@ -45,11 +45,11 @@ export function Navbar() {
                 href="/dashboard"
                 className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   pathname === "/dashboard"
-                    ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-md shadow-purple-950/50"
+                    ? "bg-teal-500/15 text-teal-300 border border-teal-500/30 shadow-md shadow-teal-950/50"
                     : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4 text-purple-400" />
+                <LayoutDashboard className="w-4 h-4 text-teal-400" />
                 <span>My Dashboard</span>
               </Link>
             ) : (
@@ -57,25 +57,25 @@ export function Navbar() {
                 href="/admin"
                 className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   pathname === "/admin"
-                    ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-md shadow-purple-950/50"
+                    ? "bg-teal-500/15 text-teal-300 border border-teal-500/30 shadow-md shadow-teal-950/50"
                     : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
-                <ShieldAlert className="w-4 h-4 text-purple-400" />
+                <ShieldAlert className="w-4 h-4 text-teal-400" />
                 <span>Admin Console</span>
               </Link>
             )}
 
             {/* User Profile Badge */}
             <div className="flex items-center space-x-3 pl-4 border-l border-slate-800">
-              <div className="flex items-center space-x-2 bg-slate-900/90 px-3.5 py-1.5 rounded-full border border-slate-800">
-                <User className="w-4 h-4 text-purple-400" />
+              <div className="flex items-center space-x-2 bg-[#0b1324] px-3.5 py-1.5 rounded-full border border-slate-800">
+                <User className="w-4 h-4 text-teal-400" />
                 <span className="text-sm font-semibold text-slate-100">{user.name}</span>
                 <span
                   className={`text-[10px] px-2 py-0.5 rounded-full uppercase font-mono font-bold tracking-wider ${
                     isAdmin
                       ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                      : "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                      : "bg-teal-500/20 text-teal-300 border border-teal-500/30"
                   }`}
                 >
                   {user.role}

@@ -52,30 +52,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans selection:bg-purple-500/30 selection:text-purple-200">
+    <div className="min-h-screen bg-[#070c18] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans selection:bg-teal-500/30 selection:text-teal-200">
       
-      {/* Groww Background Purple Glow Accents */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none" />
+      {/* Ambient Cyber Teal Background Glow Accents */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-teal-500/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-cyan-500/10 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
-        <div className="inline-flex items-center justify-center p-3.5 bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-3xl border border-purple-400/30 mb-4 shadow-2xl shadow-purple-950/60">
-          <Landmark className="w-8 h-8" />
+        <div className="inline-flex items-center justify-center p-3.5 bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 rounded-3xl border border-teal-300/40 mb-4 shadow-2xl shadow-teal-950/80">
+          <Landmark className="w-8 h-8 text-slate-950" />
         </div>
         <h2 className="text-3xl font-extrabold text-white tracking-tight">
           Welcome back to LoanFlex
         </h2>
-        <p className="mt-2 text-xs text-purple-300 font-mono tracking-widest uppercase font-semibold">
+        <p className="mt-2 text-xs text-teal-400 font-mono tracking-widest uppercase font-semibold">
           Smart EMI Engine & Credit Analytics
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-slate-900/90 backdrop-blur-xl py-8 px-6 shadow-2xl rounded-3xl border border-slate-800/90 sm:px-10 shadow-purple-950/30">
+        <div className="bg-[#0b1324]/90 backdrop-blur-xl py-8 px-6 shadow-2xl rounded-3xl border border-slate-800/90 sm:px-10 shadow-teal-950/30">
 
           {/* Quick Demo Fill Presets */}
-          <div className="mb-6 bg-slate-950/70 p-4 rounded-2xl border border-slate-800/80">
-            <div className="flex items-center space-x-1.5 text-xs font-bold text-purple-400 uppercase tracking-wider mb-2 font-mono">
+          <div className="mb-6 bg-[#070c18]/80 p-4 rounded-2xl border border-slate-800/90">
+            <div className="flex items-center space-x-1.5 text-xs font-bold text-teal-400 uppercase tracking-wider mb-2 font-mono">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Quick Demo Accounts</span>
             </div>
@@ -83,9 +83,9 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={fillDemoBorrower}
-                className="flex items-center justify-center space-x-1.5 text-xs py-2.5 px-3 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-200 border border-purple-500/30 transition-all text-left shadow-sm font-semibold"
+                className="flex items-center justify-center space-x-1.5 text-xs py-2.5 px-3 rounded-xl bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 transition-all text-left shadow-sm font-semibold"
               >
-                <UserCheck className="w-3.5 h-3.5 text-purple-400" />
+                <UserCheck className="w-3.5 h-3.5 text-teal-400" />
                 <span>Borrower (Asha)</span>
               </button>
 
@@ -122,7 +122,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm transition-all"
+                  className="block w-full pl-10 pr-4 py-2.5 bg-[#070c18] border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm transition-all"
                   placeholder="name@example.com"
                 />
               </div>
@@ -141,7 +141,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm transition-all"
+                  className="block w-full pl-10 pr-4 py-2.5 bg-[#070c18] border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm transition-all"
                   placeholder="••••••••"
                 />
               </div>
@@ -150,10 +150,10 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex justify-center items-center space-x-2 py-3.5 px-4 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 transition-all shadow-xl shadow-purple-950 hover:scale-[1.01]"
+              className="w-full flex justify-center items-center space-x-2 py-3.5 px-4 rounded-2xl text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:opacity-95 disabled:opacity-50 transition-all shadow-xl shadow-teal-950/80 hover:scale-[1.01]"
             >
               <span>{isSubmitting ? "Signing in..." : "Sign in to Dashboard"}</span>
-              {!isSubmitting && <ArrowRight className="w-4 h-4 text-white" />}
+              {!isSubmitting && <ArrowRight className="w-4 h-4 text-slate-950" />}
             </button>
           </form>
 
@@ -161,7 +161,7 @@ export default function LoginPage() {
             Don&apos;t have an account?{" "}
             <Link
               href="/signup"
-              className="font-bold text-purple-400 hover:text-purple-300 transition-colors"
+              className="font-bold text-teal-400 hover:text-teal-300 transition-colors"
             >
               Create borrower account
             </Link>

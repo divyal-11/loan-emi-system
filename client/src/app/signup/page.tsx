@@ -51,26 +51,26 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans selection:bg-purple-500/30 selection:text-purple-200">
+    <div className="min-h-screen bg-[#070c18] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans selection:bg-teal-500/30 selection:text-teal-200">
       
-      {/* Groww Background Purple Glow Accents */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-600/15 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none" />
+      {/* Ambient Cyber Teal Background Glow Accents */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-teal-500/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-cyan-500/10 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
-        <div className="inline-flex items-center justify-center p-3.5 bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-3xl border border-purple-400/30 mb-4 shadow-2xl shadow-purple-950/60">
-          <Landmark className="w-8 h-8" />
+        <div className="inline-flex items-center justify-center p-3.5 bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 rounded-3xl border border-teal-300/40 mb-4 shadow-2xl shadow-teal-950/80">
+          <Landmark className="w-8 h-8 text-slate-950" />
         </div>
         <h2 className="text-3xl font-extrabold text-white tracking-tight">
           Create your account
         </h2>
-        <p className="mt-2 text-xs text-purple-300 font-mono tracking-widest uppercase font-semibold">
+        <p className="mt-2 text-xs text-teal-400 font-mono tracking-widest uppercase font-semibold">
           Join LoanFlex Credit & EMI Platform
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-slate-900/90 backdrop-blur-xl py-8 px-6 shadow-2xl rounded-3xl border border-slate-800/90 sm:px-10 shadow-purple-950/30">
+        <div className="bg-[#0b1324]/90 backdrop-blur-xl py-8 px-6 shadow-2xl rounded-3xl border border-slate-800/90 sm:px-10 shadow-teal-950/30">
 
           {error && (
             <div className="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm flex items-start space-x-3">
@@ -93,7 +93,7 @@ export default function SignupPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm transition-all"
+                  className="block w-full pl-10 pr-4 py-2.5 bg-[#070c18] border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm transition-all"
                   placeholder="Asha Rao"
                 />
               </div>
@@ -112,7 +112,7 @@ export default function SignupPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm transition-all"
+                  className="block w-full pl-10 pr-4 py-2.5 bg-[#070c18] border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm transition-all"
                   placeholder="asha@example.com"
                 />
               </div>
@@ -131,7 +131,7 @@ export default function SignupPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm transition-all"
+                  className="block w-full pl-10 pr-4 py-2.5 bg-[#070c18] border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm transition-all"
                   placeholder="••••••••"
                 />
               </div>
@@ -147,8 +147,8 @@ export default function SignupPage() {
                   onClick={() => setRole("borrower")}
                   className={`flex items-center justify-center space-x-2 py-2.5 px-3 rounded-2xl border text-sm font-semibold transition-all ${
                     role === "borrower"
-                      ? "bg-purple-600/20 text-purple-200 border-purple-500/50 shadow-md shadow-purple-950"
-                      : "bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700"
+                      ? "bg-teal-500/15 text-teal-300 border-teal-500/40 shadow-md shadow-teal-950"
+                      : "bg-[#070c18] text-slate-400 border-slate-800 hover:border-slate-700"
                   }`}
                 >
                   <User className="w-4 h-4" />
@@ -161,7 +161,7 @@ export default function SignupPage() {
                   className={`flex items-center justify-center space-x-2 py-2.5 px-3 rounded-2xl border text-sm font-semibold transition-all ${
                     role === "admin"
                       ? "bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-md shadow-amber-950"
-                      : "bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700"
+                      : "bg-[#070c18] text-slate-400 border-slate-800 hover:border-slate-700"
                   }`}
                 >
                   <Shield className="w-4 h-4" />
@@ -173,10 +173,10 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex justify-center items-center space-x-2 py-3.5 px-4 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 transition-all shadow-xl shadow-purple-950 hover:scale-[1.01]"
+              className="w-full flex justify-center items-center space-x-2 py-3.5 px-4 rounded-2xl text-sm font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:opacity-95 disabled:opacity-50 transition-all shadow-xl shadow-teal-950/80 hover:scale-[1.01]"
             >
               <span>{isSubmitting ? "Creating account..." : "Create Account"}</span>
-              {!isSubmitting && <ArrowRight className="w-4 h-4 text-white" />}
+              {!isSubmitting && <ArrowRight className="w-4 h-4 text-slate-950" />}
             </button>
           </form>
 
@@ -184,7 +184,7 @@ export default function SignupPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="font-bold text-purple-400 hover:text-purple-300 transition-colors"
+              className="font-bold text-teal-400 hover:text-teal-300 transition-colors"
             >
               Sign in
             </Link>
