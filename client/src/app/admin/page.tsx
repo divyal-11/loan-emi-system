@@ -97,23 +97,23 @@ export default function AdminDashboardPage() {
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
-      <div className="min-h-screen bg-[#070c18] text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-teal-500/30 selection:text-teal-200 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-indigo-500/30 selection:text-indigo-200 relative overflow-hidden">
         
-        {/* Ambient Teal Background Glow */}
-        <div className="absolute top-10 right-1/4 w-[550px] h-[350px] bg-teal-500/10 blur-[150px] pointer-events-none rounded-full" />
+        {/* Ambient Indigo Background Glow */}
+        <div className="absolute top-10 right-1/4 w-[500px] h-[300px] bg-indigo-600/10 blur-[140px] pointer-events-none rounded-full" />
 
         <div className="max-w-7xl mx-auto space-y-8 relative z-10">
           
-          {/* Deep Teal Top Hero Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-teal-950/60 via-[#0b1324] to-[#070c18] p-6 rounded-3xl border border-teal-500/25 shadow-2xl shadow-teal-950/30">
+          {/* Top Hero Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-2xl">
             <div>
               <div className="flex items-center space-x-2">
-                <ShieldAlert className="w-6 h-6 text-teal-400" />
+                <ShieldAlert className="w-6 h-6 text-indigo-400" />
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   Admin Underwriting Console
                 </h1>
               </div>
-              <p className="text-slate-400 text-sm mt-1">
+              <p className="text-slate-400 text-sm mt-1 font-medium">
                 Review pending loan applications, disburse capital, and inspect compliance audit logs.
               </p>
             </div>
@@ -121,22 +121,22 @@ export default function AdminDashboardPage() {
             <button
               onClick={fetchPendingLoans}
               disabled={isLoading}
-              className="inline-flex items-center space-x-2 px-5 py-3 rounded-2xl bg-[#0b1324] hover:bg-slate-800 text-slate-200 font-bold text-sm border border-slate-800 transition-all shrink-0 hover:border-teal-500/30 shadow-lg"
+              className="inline-flex items-center space-x-2 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm border border-slate-700 transition-all shrink-0 shadow-lg"
             >
-              <RefreshCw className={`w-4 h-4 text-teal-400 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-4 h-4 text-indigo-400 ${isLoading ? "animate-spin" : ""}`} />
               <span>Refresh Queue</span>
             </button>
           </div>
 
-          {/* Deep Teal Metric Cards */}
+          {/* Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
-            <div className="bg-[#0b1324]/90 p-5 rounded-3xl border border-slate-800/90 flex items-center space-x-4 hover:border-teal-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-teal-500/15 text-teal-400 rounded-2xl border border-teal-500/25">
+            <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-indigo-500/40 transition-all shadow-xl">
+              <div className="p-3.5 bg-indigo-600/20 text-indigo-400 rounded-2xl border border-indigo-500/30">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs uppercase font-mono text-slate-400 block tracking-wider font-semibold">
+                <span className="text-xs uppercase font-mono text-slate-400 block tracking-wider font-bold">
                   Pending Approval Queue
                 </span>
                 <span className="text-2xl font-extrabold font-mono text-white">
@@ -145,12 +145,12 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="bg-[#0b1324]/90 p-5 rounded-3xl border border-slate-800/90 flex items-center space-x-4 hover:border-teal-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-teal-500/15 text-teal-400 rounded-2xl border border-teal-500/25">
+            <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-indigo-500/40 transition-all shadow-xl">
+              <div className="p-3.5 bg-indigo-600/20 text-indigo-400 rounded-2xl border border-indigo-500/30">
                 <IndianRupee className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs uppercase font-mono text-slate-400 block tracking-wider font-semibold">
+                <span className="text-xs uppercase font-mono text-slate-400 block tracking-wider font-bold">
                   Total Pending Volume
                 </span>
                 <span className="text-2xl font-extrabold font-mono text-white">
@@ -177,34 +177,34 @@ export default function AdminDashboardPage() {
           )}
 
           {/* Pending Applications Queue */}
-          <div className="bg-[#0b1324]/90 rounded-3xl border border-slate-800/90 overflow-hidden shadow-2xl">
-            <div className="px-6 py-5 border-b border-slate-800/90 flex items-center justify-between bg-[#070c18]/80">
+          <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
+            <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
               <div>
-                <h2 className="font-bold text-lg text-white">Pending Underwriting Queue</h2>
-                <p className="text-xs text-slate-400">Applications waiting for decision</p>
+                <h2 className="font-extrabold text-lg text-white">Pending Underwriting Queue</h2>
+                <p className="text-xs text-slate-400 font-medium">Applications waiting for decision</p>
               </div>
-              <span className="text-xs font-mono text-teal-300 bg-teal-500/15 px-3 py-1 rounded-full border border-teal-500/30 font-semibold">
+              <span className="text-xs font-mono text-indigo-300 bg-indigo-600/20 px-3 py-1 rounded-full border border-indigo-500/30 font-bold">
                 {pendingLoans.length} Pending
               </span>
             </div>
 
             {isLoading ? (
               <div className="py-20 flex flex-col items-center justify-center text-slate-400">
-                <Loader2 className="w-8 h-8 animate-spin text-teal-400 mb-2" />
+                <Loader2 className="w-8 h-8 animate-spin text-indigo-500 mb-2" />
                 <p className="text-sm font-medium">Loading queue...</p>
               </div>
             ) : pendingLoans.length === 0 ? (
               <div className="py-16 text-center text-slate-400">
                 <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2 opacity-80" />
-                <p className="text-base font-medium text-white">Queue is clear!</p>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-base font-bold text-white">Queue is clear!</p>
+                <p className="text-xs text-slate-400 mt-1 font-medium">
                   There are currently no pending loan applications requiring decision.
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-300">
-                  <thead className="bg-[#070c18] text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 font-mono">
+                <table className="w-full text-left text-sm text-slate-200">
+                  <thead className="bg-slate-950 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 font-mono">
                     <tr>
                       <th className="px-6 py-4">Loan ID</th>
                       <th className="px-6 py-4">Applicant ID</th>
@@ -215,28 +215,28 @@ export default function AdminDashboardPage() {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60">
+                  <tbody className="divide-y divide-slate-800/80">
                     {pendingLoans.map((loan) => {
                       const isProcessingThis = processingId === loan.id;
 
                       return (
-                        <tr key={loan.id} className="hover:bg-slate-900/60 transition-colors">
-                          <td className="px-6 py-4 font-mono text-xs text-teal-400 font-semibold">
+                        <tr key={loan.id} className="hover:bg-slate-800/50 transition-colors">
+                          <td className="px-6 py-4 font-mono text-xs text-indigo-400 font-bold">
                             {loan.id.substring(0, 10)}...
                           </td>
-                          <td className="px-6 py-4 font-mono text-xs text-slate-400">
+                          <td className="px-6 py-4 font-mono text-xs text-slate-300">
                             {loan.applicantId.substring(0, 10)}...
                           </td>
                           <td className="px-6 py-4 font-mono font-extrabold text-white text-base">
                             ₹{loan.amount.toLocaleString("en-IN")}
                           </td>
-                          <td className="px-6 py-4 font-mono text-slate-300">
+                          <td className="px-6 py-4 font-mono text-slate-300 font-medium">
                             {loan.tenureMonths} Months
                           </td>
-                          <td className="px-6 py-4 text-slate-300 max-w-xs truncate">
+                          <td className="px-6 py-4 text-slate-300 max-w-xs truncate font-medium">
                             {loan.purpose}
                           </td>
-                          <td className="px-6 py-4 font-mono text-xs text-slate-400">
+                          <td className="px-6 py-4 font-mono text-xs text-slate-400 font-medium">
                             {new Date(loan.appliedAt).toLocaleDateString("en-IN", {
                               day: "2-digit",
                               month: "short",
@@ -249,7 +249,7 @@ export default function AdminDashboardPage() {
                               {/* Audit Trail Button */}
                               <button
                                 onClick={() => setAuditLoanId(loan.id)}
-                                className="p-2 text-slate-400 hover:text-teal-400 hover:bg-teal-500/10 rounded-xl transition-colors"
+                                className="p-2 text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-xl transition-colors"
                                 title="View Audit Trail"
                               >
                                 <History className="w-4 h-4" />
@@ -259,7 +259,7 @@ export default function AdminDashboardPage() {
                               <button
                                 onClick={() => setRejectingLoanId(loan.id)}
                                 disabled={isProcessingThis}
-                                className="px-3.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 font-semibold text-xs transition-all disabled:opacity-50 flex items-center space-x-1"
+                                className="px-3.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold text-xs transition-all disabled:opacity-50 flex items-center space-x-1"
                               >
                                 <XCircle className="w-3.5 h-3.5" />
                                 <span>Reject</span>
@@ -269,12 +269,12 @@ export default function AdminDashboardPage() {
                               <button
                                 onClick={() => handleApprove(loan.id)}
                                 disabled={isProcessingThis}
-                                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:opacity-95 text-slate-950 font-extrabold text-xs shadow-md shadow-teal-950 transition-all disabled:opacity-50 flex items-center space-x-1 hover:scale-[1.02]"
+                                className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md shadow-emerald-950 transition-all disabled:opacity-50 flex items-center space-x-1 hover:scale-[1.02]"
                               >
                                 {isProcessingThis ? (
-                                  <Loader2 className="w-3.5 h-3.5 animate-spin text-slate-950" />
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
                                 ) : (
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-slate-950" />
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                                 )}
                                 <span>{isProcessingThis ? "Approving..." : "Approve"}</span>
                               </button>

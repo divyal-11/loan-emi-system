@@ -21,20 +21,20 @@ export function Navbar() {
   const isAdmin = user.role === "admin";
 
   return (
-    <nav className="sticky top-0 z-40 bg-[#070c18]/90 backdrop-blur-md border-b border-slate-800/90 text-slate-100 font-sans">
+    <nav className="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-md border-b border-slate-800 text-slate-100 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Cyber Teal Logo */}
+          {/* Indigo FinTech Logo */}
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 rounded-2xl border border-teal-300/40 shadow-lg shadow-teal-950/80">
-              <Landmark className="w-6 h-6 text-slate-950" />
+            <div className="p-2 bg-indigo-600 text-white rounded-2xl border border-indigo-400/40 shadow-lg shadow-indigo-950">
+              <Landmark className="w-6 h-6 text-white" />
             </div>
             <div>
-              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-teal-100 to-emerald-400 bg-clip-text text-transparent">
+              <span className="font-extrabold text-xl tracking-tight text-white">
                 LoanFlex
               </span>
-              <span className="text-xs block text-teal-400/90 font-mono font-semibold tracking-wider">FINTECH SUITE</span>
+              <span className="text-xs block text-indigo-400 font-mono font-bold tracking-wider">FINTECH PLATFORM</span>
             </div>
           </div>
 
@@ -43,39 +43,39 @@ export function Navbar() {
             {!isAdmin ? (
               <Link
                 href="/dashboard"
-                className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
                   pathname === "/dashboard"
-                    ? "bg-teal-500/15 text-teal-300 border border-teal-500/30 shadow-md shadow-teal-950/50"
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-950"
                     : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4 text-teal-400" />
+                <LayoutDashboard className="w-4 h-4" />
                 <span>My Dashboard</span>
               </Link>
             ) : (
               <Link
                 href="/admin"
-                className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
                   pathname === "/admin"
-                    ? "bg-teal-500/15 text-teal-300 border border-teal-500/30 shadow-md shadow-teal-950/50"
+                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-950"
                     : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
-                <ShieldAlert className="w-4 h-4 text-teal-400" />
+                <ShieldAlert className="w-4 h-4" />
                 <span>Admin Console</span>
               </Link>
             )}
 
             {/* User Profile Badge */}
             <div className="flex items-center space-x-3 pl-4 border-l border-slate-800">
-              <div className="flex items-center space-x-2 bg-[#0b1324] px-3.5 py-1.5 rounded-full border border-slate-800">
-                <User className="w-4 h-4 text-teal-400" />
-                <span className="text-sm font-semibold text-slate-100">{user.name}</span>
+              <div className="flex items-center space-x-2 bg-slate-900 px-3.5 py-1.5 rounded-full border border-slate-800">
+                <User className="w-4 h-4 text-indigo-400" />
+                <span className="text-sm font-bold text-white">{user.name}</span>
                 <span
                   className={`text-[10px] px-2 py-0.5 rounded-full uppercase font-mono font-bold tracking-wider ${
                     isAdmin
-                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                      : "bg-teal-500/20 text-teal-300 border border-teal-500/30"
+                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                      : "bg-indigo-500/20 text-indigo-300 border border-indigo-500/40"
                   }`}
                 >
                   {user.role}

@@ -77,23 +77,23 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in font-sans">
-      <div className="bg-[#0b1324] border border-teal-500/30 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden text-slate-100 shadow-teal-950/60">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in font-sans">
+      <div className="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden text-slate-100">
         
-        {/* Dark Teal-Green Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800/90 bg-gradient-to-r from-teal-950/70 via-[#0b1324] to-[#0b1324]">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800 bg-slate-950">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-teal-500/15 text-teal-400 rounded-2xl border border-teal-500/30 shadow-md shadow-teal-950/50">
+            <div className="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-2xl border border-indigo-500/30">
               <Calculator className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-xl text-white tracking-tight">EMI Loan Calculator</h3>
-              <p className="text-xs text-teal-400 font-mono">12.0% p.a. Fixed Interest Rate</p>
+              <h3 className="font-extrabold text-xl text-white tracking-tight">EMI Loan Calculator</h3>
+              <p className="text-xs text-indigo-400 font-mono font-medium">12.0% p.a. Fixed Interest Rate</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800/60 transition-colors"
+            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -108,15 +108,15 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
             </div>
           )}
 
-          {/* Teal Slider 1: Loan Amount */}
-          <div className="space-y-3 bg-[#070d18] p-4 rounded-2xl border border-slate-800/90 hover:border-teal-500/30 transition-all">
+          {/* Slider 1: Loan Amount */}
+          <div className="space-y-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
             <div className="flex justify-between items-center">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-300">
                 Loan Amount
               </label>
-              <div className="flex items-center space-x-1 px-3.5 py-1.5 bg-teal-500/15 border border-teal-500/30 rounded-xl shadow-sm">
-                <IndianRupee className="w-4 h-4 text-teal-400" />
-                <span className="font-bold font-mono text-teal-300 text-lg">
+              <div className="flex items-center space-x-1 px-3.5 py-1.5 bg-indigo-600/20 border border-indigo-500/30 rounded-xl">
+                <IndianRupee className="w-4 h-4 text-indigo-400" />
+                <span className="font-extrabold font-mono text-white text-lg">
                   {amount.toLocaleString("en-IN")}
                 </span>
               </div>
@@ -128,24 +128,24 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
               step={5000}
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
-              className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
+              className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
             />
-            <div className="flex justify-between text-[11px] font-mono text-slate-500">
+            <div className="flex justify-between text-xs font-mono text-slate-400 font-medium">
               <span>₹10,000</span>
               <span>₹2,50,000</span>
               <span>₹5,00,000</span>
             </div>
           </div>
 
-          {/* Teal Slider 2: Tenure Months */}
-          <div className="space-y-3 bg-[#070d18] p-4 rounded-2xl border border-slate-800/90 hover:border-teal-500/30 transition-all">
+          {/* Slider 2: Tenure Months */}
+          <div className="space-y-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
             <div className="flex justify-between items-center">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-300">
                 Tenure (Months)
               </label>
-              <div className="flex items-center space-x-1 px-3.5 py-1.5 bg-teal-500/15 border border-teal-500/30 rounded-xl shadow-sm">
-                <Calendar className="w-4 h-4 text-teal-400" />
-                <span className="font-bold font-mono text-teal-300 text-lg">
+              <div className="flex items-center space-x-1 px-3.5 py-1.5 bg-indigo-600/20 border border-indigo-500/30 rounded-xl">
+                <Calendar className="w-4 h-4 text-indigo-400" />
+                <span className="font-extrabold font-mono text-white text-lg">
                   {tenureMonths} Months
                 </span>
               </div>
@@ -157,9 +157,9 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
               step={3}
               value={tenureMonths}
               onChange={(e) => setTenureMonths(Number(e.target.value))}
-              className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
+              className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
             />
-            <div className="flex justify-between text-[11px] font-mono text-slate-500">
+            <div className="flex justify-between text-xs font-mono text-slate-400 font-medium">
               <span>3 Mo</span>
               <span>12 Mo (1 Yr)</span>
               <span>36 Mo (3 Yrs)</span>
@@ -169,11 +169,11 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
 
           {/* Purpose Input */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
               Loan Purpose
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 pt-3 pointer-events-none text-slate-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 pt-3 pointer-events-none text-slate-400">
                 <FileText className="w-4 h-4" />
               </div>
               <textarea
@@ -182,50 +182,50 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
                 required
                 value={purpose}
                 onChange={(e) => setPurpose(e.target.value)}
-                className="block w-full pl-10 pr-4 py-2.5 bg-[#070d18] border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+                className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-medium"
                 placeholder="e.g. Home renovation, business expansion..."
               />
             </div>
           </div>
 
-          {/* Dark Blue-Green Breakdown Box & Visual Progress Bar */}
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-teal-950/60 via-[#070d18] to-[#070d18] border border-teal-500/30 space-y-4 shadow-xl">
+          {/* Breakdown Box & Visual Progress Bar */}
+          <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 shadow-xl">
             <div className="flex justify-between items-center">
               <div>
-                <span className="text-xs uppercase tracking-wider text-teal-400 font-bold block font-mono">
+                <span className="text-xs uppercase tracking-wider text-indigo-400 font-bold block font-mono">
                   Monthly Payment (EMI)
                 </span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-400 font-medium">
                   Principal + Interest @ 12% p.a.
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-3xl font-extrabold font-mono text-teal-300">
+                <span className="text-3xl font-extrabold font-mono text-white">
                   ₹{estimatedEmi.toLocaleString("en-IN")}
                 </span>
-                <span className="text-xs text-slate-400 block font-mono">/ month</span>
+                <span className="text-xs text-indigo-400 font-mono block font-bold">/ month</span>
               </div>
             </div>
 
-            {/* Principal vs Interest Breakdown Stats */}
-            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80 text-xs">
+            {/* Principal vs Interest Stats */}
+            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800 text-xs">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-cyan-400" />
-                <span className="text-slate-400">Principal:</span>
+                <div className="w-3 h-3 rounded-full bg-indigo-500" />
+                <span className="text-slate-300 font-medium">Principal:</span>
                 <span className="font-bold font-mono text-white">₹{amount.toLocaleString("en-IN")} ({principalPercentage}%)</span>
               </div>
               <div className="flex items-center space-x-2 justify-end">
                 <div className="w-3 h-3 rounded-full bg-emerald-400" />
-                <span className="text-slate-400">Total Interest:</span>
+                <span className="text-slate-300 font-medium">Interest:</span>
                 <span className="font-bold font-mono text-emerald-300">₹{totalInterest.toLocaleString("en-IN")} ({interestPercentage}%)</span>
               </div>
             </div>
 
-            {/* Cyan & Emerald Progress Bar */}
-            <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden flex shadow-inner">
+            {/* Progress Bar */}
+            <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden flex">
               <div
                 style={{ width: `${principalPercentage}%` }}
-                className="bg-gradient-to-r from-cyan-500 to-teal-400 h-full transition-all duration-300"
+                className="bg-indigo-600 h-full transition-all duration-300"
                 title={`Principal: ${principalPercentage}%`}
               />
               <div
@@ -241,16 +241,16 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-2xl border border-slate-800 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-colors"
+              className="px-5 py-2.5 rounded-2xl border border-slate-800 text-slate-300 hover:bg-slate-800 text-sm font-semibold transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:opacity-95 text-slate-950 font-extrabold text-sm shadow-xl shadow-teal-950/80 transition-all disabled:opacity-50 flex items-center space-x-2 hover:scale-[1.02]"
+              className="px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm shadow-xl shadow-indigo-950 transition-all disabled:opacity-50 flex items-center space-x-2 hover:scale-[1.02]"
             >
-              <CheckCircle className="w-4 h-4 text-slate-950" />
+              <CheckCircle className="w-4 h-4 text-white" />
               <span>{isSubmitting ? "Submitting..." : "Apply Now"}</span>
             </button>
           </div>
