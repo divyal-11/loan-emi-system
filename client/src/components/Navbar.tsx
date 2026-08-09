@@ -25,16 +25,16 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Groww-style Logo */}
+          {/* Groww Purple Logo */}
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20 shadow-lg shadow-emerald-950/40">
+            <div className="p-2 bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-2xl border border-purple-400/30 shadow-lg shadow-purple-950/60">
               <Landmark className="w-6 h-6" />
             </div>
             <div>
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-emerald-400 bg-clip-text text-transparent">
+              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
                 LoanFlex
               </span>
-              <span className="text-xs block text-emerald-400/90 font-mono font-medium">FINTECH SUITE</span>
+              <span className="text-xs block text-purple-400/90 font-mono font-medium tracking-wider">FINTECH SUITE</span>
             </div>
           </div>
 
@@ -45,11 +45,11 @@ export function Navbar() {
                 href="/dashboard"
                 className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   pathname === "/dashboard"
-                    ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-md shadow-emerald-950/50"
+                    ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-md shadow-purple-950/50"
                     : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4 text-emerald-400" />
+                <LayoutDashboard className="w-4 h-4 text-purple-400" />
                 <span>My Dashboard</span>
               </Link>
             ) : (
@@ -57,11 +57,11 @@ export function Navbar() {
                 href="/admin"
                 className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                   pathname === "/admin"
-                    ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-md shadow-emerald-950/50"
+                    ? "bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-md shadow-purple-950/50"
                     : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
-                <ShieldAlert className="w-4 h-4 text-emerald-400" />
+                <ShieldAlert className="w-4 h-4 text-purple-400" />
                 <span>Admin Console</span>
               </Link>
             )}
@@ -69,13 +69,13 @@ export function Navbar() {
             {/* User Profile Badge */}
             <div className="flex items-center space-x-3 pl-4 border-l border-slate-800">
               <div className="flex items-center space-x-2 bg-slate-900/90 px-3.5 py-1.5 rounded-full border border-slate-800">
-                <User className="w-4 h-4 text-emerald-400" />
+                <User className="w-4 h-4 text-purple-400" />
                 <span className="text-sm font-semibold text-slate-100">{user.name}</span>
                 <span
                   className={`text-[10px] px-2 py-0.5 rounded-full uppercase font-mono font-bold tracking-wider ${
                     isAdmin
                       ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                      : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                      : "bg-purple-500/20 text-purple-300 border border-purple-500/30"
                   }`}
                 >
                   {user.role}

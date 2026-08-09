@@ -97,14 +97,18 @@ export default function AdminDashboardPage() {
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
-      <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
-        <div className="max-w-7xl mx-auto space-y-8">
+      <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-purple-500/30 selection:text-purple-200 relative overflow-hidden">
+        
+        {/* Groww Ambient Purple Background Glow */}
+        <div className="absolute top-10 right-1/4 w-[500px] h-[300px] bg-purple-600/10 blur-[140px] pointer-events-none rounded-full" />
+
+        <div className="max-w-7xl mx-auto space-y-8 relative z-10">
           
-          {/* Groww-style Top Hero Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 p-6 rounded-3xl border border-emerald-500/20 shadow-2xl shadow-emerald-950/20">
+          {/* Groww Purple Top Hero Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-purple-950/50 via-slate-900 to-slate-950 p-6 rounded-3xl border border-purple-500/25 shadow-2xl shadow-purple-950/30">
             <div>
               <div className="flex items-center space-x-2">
-                <ShieldAlert className="w-6 h-6 text-emerald-400" />
+                <ShieldAlert className="w-6 h-6 text-purple-400" />
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   Admin Underwriting Console
                 </h1>
@@ -117,18 +121,18 @@ export default function AdminDashboardPage() {
             <button
               onClick={fetchPendingLoans}
               disabled={isLoading}
-              className="inline-flex items-center space-x-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold text-sm border border-slate-800 transition-all shrink-0 hover:border-emerald-500/30 shadow-lg"
+              className="inline-flex items-center space-x-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold text-sm border border-slate-800 transition-all shrink-0 hover:border-purple-500/30 shadow-lg"
             >
-              <RefreshCw className={`w-4 h-4 text-emerald-400 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-4 h-4 text-purple-400 ${isLoading ? "animate-spin" : ""}`} />
               <span>Refresh Queue</span>
             </button>
           </div>
 
-          {/* Groww-style Metric Cards */}
+          {/* Groww Purple Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
-            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-emerald-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20">
+            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-purple-500/30 transition-all shadow-xl">
+              <div className="p-3.5 bg-purple-500/15 text-purple-400 rounded-2xl border border-purple-500/25">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
@@ -141,8 +145,8 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-emerald-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20">
+            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-purple-500/30 transition-all shadow-xl">
+              <div className="p-3.5 bg-purple-500/15 text-purple-400 rounded-2xl border border-purple-500/25">
                 <IndianRupee className="w-6 h-6" />
               </div>
               <div>
@@ -177,16 +181,16 @@ export default function AdminDashboardPage() {
             <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
               <div>
                 <h2 className="font-bold text-lg text-white">Pending Underwriting Queue</h2>
-                <p className="text-xs text-slate-400">Applications waiting for review</p>
+                <p className="text-xs text-slate-400">Applications waiting for decision</p>
               </div>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-semibold">
+              <span className="text-xs font-mono text-purple-300 bg-purple-500/15 px-3 py-1 rounded-full border border-purple-500/30 font-semibold">
                 {pendingLoans.length} Pending
               </span>
             </div>
 
             {isLoading ? (
               <div className="py-20 flex flex-col items-center justify-center text-slate-400">
-                <Loader2 className="w-8 h-8 animate-spin text-emerald-400 mb-2" />
+                <Loader2 className="w-8 h-8 animate-spin text-purple-400 mb-2" />
                 <p className="text-sm font-medium">Loading queue...</p>
               </div>
             ) : pendingLoans.length === 0 ? (
@@ -217,7 +221,7 @@ export default function AdminDashboardPage() {
 
                       return (
                         <tr key={loan.id} className="hover:bg-slate-900/60 transition-colors">
-                          <td className="px-6 py-4 font-mono text-xs text-emerald-400 font-semibold">
+                          <td className="px-6 py-4 font-mono text-xs text-purple-400 font-semibold">
                             {loan.id.substring(0, 10)}...
                           </td>
                           <td className="px-6 py-4 font-mono text-xs text-slate-400">
@@ -245,7 +249,7 @@ export default function AdminDashboardPage() {
                               {/* Audit Trail Button */}
                               <button
                                 onClick={() => setAuditLoanId(loan.id)}
-                                className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-xl transition-colors"
+                                className="p-2 text-slate-400 hover:text-purple-400 hover:bg-purple-500/10 rounded-xl transition-colors"
                                 title="View Audit Trail"
                               >
                                 <History className="w-4 h-4" />
@@ -265,12 +269,12 @@ export default function AdminDashboardPage() {
                               <button
                                 onClick={() => handleApprove(loan.id)}
                                 disabled={isProcessingThis}
-                                className="px-4 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-950 transition-all disabled:opacity-50 flex items-center space-x-1 hover:scale-[1.02]"
+                                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-purple-950 transition-all disabled:opacity-50 flex items-center space-x-1 hover:scale-[1.02]"
                               >
                                 {isProcessingThis ? (
-                                  <Loader2 className="w-3.5 h-3.5 animate-spin text-slate-950" />
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
                                 ) : (
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-slate-950" />
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                                 )}
                                 <span>{isProcessingThis ? "Approving..." : "Approve"}</span>
                               </button>

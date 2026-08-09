@@ -78,49 +78,54 @@ export default function BorrowerDashboardPage() {
 
   return (
     <ProtectedRoute allowedRoles={["borrower"]}>
-      <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
-        <div className="max-w-7xl mx-auto space-y-8">
+      <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-purple-500/30 selection:text-purple-200 relative overflow-hidden">
+        
+        {/* Groww Ambient Purple & Violet Background Glows */}
+        <div className="absolute top-10 left-1/3 w-[500px] h-[300px] bg-purple-600/10 blur-[140px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-20 right-10 w-[400px] h-[300px] bg-indigo-600/10 blur-[130px] pointer-events-none rounded-full" />
+
+        <div className="max-w-7xl mx-auto space-y-8 relative z-10">
           
-          {/* Groww-style Top Hero Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 p-6 rounded-3xl border border-emerald-500/20 shadow-2xl shadow-emerald-950/20">
+          {/* Groww Purple Top Hero Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-purple-950/50 via-slate-900 to-slate-950 p-6 rounded-3xl border border-purple-500/25 shadow-2xl shadow-purple-950/30">
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                  Financial Portal
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 px-3 py-1 rounded-full border border-purple-500/30">
+                  Groww FinTech Suite
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-2">
-                Borrower Dashboard
+                Borrower Credit Hub
               </h1>
               <p className="text-slate-400 text-sm mt-1">
-                Track credit lines, calculate EMIs in real-time, and manage repayments.
+                Calculate EMIs in real-time, inspect repayment schedules, and track loans.
               </p>
             </div>
 
             <button
               onClick={() => setIsApplyModalOpen(true)}
-              className="inline-flex items-center space-x-2 px-6 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-950/80 transition-all shrink-0 hover:scale-[1.02]"
+              className="inline-flex items-center space-x-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-purple-950 transition-all shrink-0 hover:scale-[1.02]"
             >
-              <PlusCircle className="w-5 h-5 text-slate-950" />
+              <PlusCircle className="w-5 h-5 text-white" />
               <span>Apply for New Loan</span>
             </button>
           </div>
 
-          {/* Groww-style Metric Cards */}
+          {/* Groww Purple Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             
             {/* Card 1: Active Loan */}
-            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-emerald-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20">
+            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-purple-500/30 transition-all shadow-xl">
+              <div className="p-3.5 bg-purple-500/15 text-purple-400 rounded-2xl border border-purple-500/25">
                 <Building className="w-6 h-6" />
               </div>
               <div>
                 <span className="text-xs uppercase font-mono text-slate-400 block tracking-wider font-semibold">
-                  Active Credit Line
+                  Active Credit Status
                 </span>
                 <span className="text-lg font-bold text-white font-mono">
                   {activeLoan ? (
-                    <span className="text-emerald-400">{activeLoan.status}</span>
+                    <span className="text-purple-400">{activeLoan.status}</span>
                   ) : (
                     <span className="text-slate-500">No Active Loan</span>
                   )}
@@ -129,8 +134,8 @@ export default function BorrowerDashboardPage() {
             </div>
 
             {/* Card 2: Total Disbursed */}
-            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-emerald-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20">
+            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-purple-500/30 transition-all shadow-xl">
+              <div className="p-3.5 bg-purple-500/15 text-purple-400 rounded-2xl border border-purple-500/25">
                 <IndianRupee className="w-6 h-6" />
               </div>
               <div>
@@ -144,8 +149,8 @@ export default function BorrowerDashboardPage() {
             </div>
 
             {/* Card 3: Total Applications */}
-            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-emerald-500/30 transition-all shadow-xl">
-              <div className="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20">
+            <div className="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 flex items-center space-x-4 hover:border-purple-500/30 transition-all shadow-xl">
+              <div className="p-3.5 bg-purple-500/15 text-purple-400 rounded-2xl border border-purple-500/25">
                 <CreditCard className="w-6 h-6" />
               </div>
               <div>
@@ -168,21 +173,21 @@ export default function BorrowerDashboardPage() {
             </div>
           )}
 
-          {/* Groww-style Applications Table Container */}
+          {/* Groww Purple Applications Table Container */}
           <div className="bg-slate-900/90 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
             <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
               <div>
                 <h2 className="font-bold text-lg text-white">My Loan Applications</h2>
                 <p className="text-xs text-slate-400">Historical & active credit submissions</p>
               </div>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-semibold">
+              <span className="text-xs font-mono text-purple-300 bg-purple-500/15 px-3 py-1 rounded-full border border-purple-500/30 font-semibold">
                 {loans.length} Records
               </span>
             </div>
 
             {isLoading ? (
               <div className="py-20 flex flex-col items-center justify-center text-slate-400">
-                <Loader2 className="w-8 h-8 animate-spin text-emerald-400 mb-2" />
+                <Loader2 className="w-8 h-8 animate-spin text-purple-400 mb-2" />
                 <p className="text-sm font-medium">Loading applications...</p>
               </div>
             ) : loans.length === 0 ? (
@@ -211,7 +216,7 @@ export default function BorrowerDashboardPage() {
                       return (
                         <React.Fragment key={loan.id}>
                           <tr className="hover:bg-slate-900/60 transition-colors">
-                            <td className="px-6 py-4 font-mono text-xs text-emerald-400 font-semibold">
+                            <td className="px-6 py-4 font-mono text-xs text-purple-400 font-semibold">
                               {loan.id.substring(0, 10)}...
                             </td>
                             <td className="px-6 py-4 font-mono font-extrabold text-white text-base">
@@ -264,12 +269,12 @@ export default function BorrowerDashboardPage() {
                                     className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs transition-colors"
                                     title="Download Sanction Letter PDF"
                                   >
-                                    <Download className="w-3.5 h-3.5 text-emerald-400" />
+                                    <Download className="w-3.5 h-3.5 text-purple-400" />
                                     <span>Sanction Letter</span>
                                   </button>
                                   <button
                                     onClick={() => setSelectedLoanIdForSchedule(loan.id)}
-                                    className="inline-flex items-center space-x-1 px-3.5 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 font-semibold text-xs transition-all shadow-md shadow-emerald-950/40"
+                                    className="inline-flex items-center space-x-1 px-3.5 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/40 font-semibold text-xs transition-all shadow-md shadow-purple-950/50"
                                   >
                                     <Eye className="w-3.5 h-3.5" />
                                     <span>Schedule & Pay</span>
