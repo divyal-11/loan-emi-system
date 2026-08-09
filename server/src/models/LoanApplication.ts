@@ -15,6 +15,7 @@ export interface ILoanApplication {
   interestRate: number;
   purpose: string;
   status: LoanStatus;
+  rejectionReason?: string | null;
   appliedAt: Date;
   decidedAt: Date | null;
   decidedBy: mongoose.Types.ObjectId | null;
@@ -33,6 +34,7 @@ const loanApplicationSchema = new Schema<ILoanApplication>(
       required: true,
       default: "PENDING",
     },
+    rejectionReason: { type: String, default: null },
     appliedAt: { type: Date, default: () => new Date() },
     decidedAt: { type: Date, default: null },
     decidedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },

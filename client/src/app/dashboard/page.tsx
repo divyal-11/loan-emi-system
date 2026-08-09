@@ -31,6 +31,7 @@ export interface LoanItem {
   interestRate: number;
   purpose: string;
   status: "PENDING" | "APPROVED" | "REJECTED" | "DISBURSED" | "CLOSED" | "DEFAULTED";
+  rejectionReason?: string | null;
   appliedAt: string;
   decidedAt: string | null;
   decidedBy: string | null;
@@ -200,76 +201,100 @@ export default function BorrowerDashboardPage() {
                   <tbody className="divide-y divide-slate-800/60">
                     {loans.map((loan) => {
                       return (
-                        <tr key={loan.id} className="hover:bg-slate-900/50 transition-colors">
-                          <td className="px-6 py-4 font-mono text-xs text-indigo-400 font-medium">
-                            {loan.id.substring(0, 10)}...
-                          </td>
-                          <td className="px-6 py-4 font-mono font-bold text-white">
-                            ₹{loan.amount.toLocaleString("en-IN")}
-                          </td>
-                          <td className="px-6 py-4 font-mono text-slate-300">
-                            {loan.tenureMonths} Months
-                          </td>
-                          <td className="px-6 py-4 text-slate-300 max-w-xs truncate">
-                            {loan.purpose}
-                          </td>
-                          <td className="px-6 py-4">
-                            {loan.status === "PENDING" && (
-                              <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/20">
-                                <Clock className="w-3.5 h-3.5 text-amber-400" />
-                                <span>Pending</span>
-                              </span>
-                            )}
-                            {loan.status === "DISBURSED" && (
-                              <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                                <span>Disbursed</span>
-                              </span>
-                            )}
-                            {loan.status === "CLOSED" && (
-                              <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                                <FileCheck className="w-3.5 h-3.5 text-indigo-400" />
-                                <span>Closed</span>
-                              </span>
-                            )}
-                            {loan.status === "REJECTED" && (
-                              <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20">
-                                <XCircle className="w-3.5 h-3.5 text-rose-400" />
-                                <span>Rejected</span>
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 font-mono text-xs text-slate-400">
-                            {new Date(loan.appliedAt).toLocaleDateString("en-IN", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                          </td>
-                          <td className="px-6 py-4 text-right">
-                            {["DISBURSED", "CLOSED"].includes(loan.status) ? (
-                              <div className="flex items-center justify-end space-x-2">
-                                <button
-                                  onClick={() => user && generateSanctionLetter(loan, user)}
-                                  className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium text-xs transition-colors"
-                                  title="Download Sanction Letter PDF"
-                                >
-                                  <Download className="w-3.5 h-3.5 text-indigo-400" />
-                                  <span>Sanction Letter</span>
-                                </button>
-                                <button
-                                  onClick={() => setSelectedLoanIdForSchedule(loan.id)}
-                                  className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 font-medium text-xs transition-colors"
-                                >
-                                  <Eye className="w-3.5 h-3.5" />
-                                  <span>Schedule & Pay</span>
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-xs text-slate-500 font-mono">—</span>
-                            )}
-                          </td>
-                        </tr>
+                        <React.Fragment key={loan.id}>
+                          <tr className="hover:bg-slate-900/50 transition-colors">
+                            <td className="px-6 py-4 font-mono text-xs text-indigo-400 font-medium">
+                              {loan.id.substring(0, 10)}...
+                            </td>
+                            <td className="px-6 py-4 font-mono font-bold text-white">
+                              ₹{loan.amount.toLocaleString("en-IN")}
+                            </td>
+                            <td className="px-6 py-4 font-mono text-slate-300">
+                              {loan.tenureMonths} Months
+                            </td>
+                            <td className="px-6 py-4 text-slate-300 max-w-xs truncate">
+                              {loan.purpose}
+                            </td>
+                            <td className="px-6 py-4">
+                              {loan.status === "PENDING" && (
+                                <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                                  <Clock className="w-3.5 h-3.5 text-amber-400" />
+                                  <span>Pending</span>
+                                </span>
+                              )}
+                              {loan.status === "DISBURSED" && (
+                                <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                                  <span>Disbursed</span>
+                                </span>
+                              )}
+                              {loan.status === "CLOSED" && (
+                                <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                                  <FileCheck className="w-3.5 h-3.5 text-indigo-400" />
+                                  <span>Closed</span>
+                                </span>
+                              )}
+                              {loan.status === "REJECTED" && (
+                                <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20">
+                                  <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                                  <span>Rejected</span>
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 font-mono text-xs text-slate-400">
+                              {new Date(loan.appliedAt).toLocaleDateString("en-IN", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              {["DISBURSED", "CLOSED"].includes(loan.status) ? (
+                                <div className="flex items-center justify-end space-x-2">
+                                  <button
+                                    onClick={() => user && generateSanctionLetter(loan, user)}
+                                    className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium text-xs transition-colors"
+                                    title="Download Sanction Letter PDF"
+                                  >
+                                    <Download className="w-3.5 h-3.5 text-indigo-400" />
+                                    <span>Sanction Letter</span>
+                                  </button>
+                                  <button
+                                    onClick={() => setSelectedLoanIdForSchedule(loan.id)}
+                                    className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 font-medium text-xs transition-colors"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" />
+                                    <span>Schedule & Pay</span>
+                                  </button>
+                                </div>
+                              ) : (
+                                <span className="text-xs text-slate-500 font-mono">—</span>
+                              )}
+                            </td>
+                          </tr>
+
+                          {/* Decline Reason Notice Card */}
+                          {loan.status === "REJECTED" && (
+                            <tr className="bg-rose-950/20 border-b border-rose-500/20">
+                              <td colSpan={7} className="px-6 py-3">
+                                <div className="flex items-start space-x-3 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs">
+                                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                                  <div className="space-y-1">
+                                    <span className="font-semibold text-rose-200 block text-xs tracking-wide uppercase font-mono">
+                                      Decline Reason Notice:
+                                    </span>
+                                    <p className="text-slate-200 font-medium text-sm">
+                                      &quot;{loan.rejectionReason || "Application did not meet internal credit risk & underwriting criteria."}&quot;
+                                    </p>
+                                    <p className="text-[11px] text-slate-400">
+                                      If you have questions regarding this decision, please reach out to underwriting support.
+                                    </p>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
                       );
                     })}
                   </tbody>

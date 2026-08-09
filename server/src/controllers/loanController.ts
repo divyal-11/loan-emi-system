@@ -40,6 +40,7 @@ function formatLoan(loan: HydratedDocument<ILoanApplication>): Record<string, un
     interestRate: loan.interestRate,
     purpose: loan.purpose,
     status: loan.status,
+    rejectionReason: loan.rejectionReason || null,
     appliedAt: loan.appliedAt.toISOString(),
     decidedAt: loan.decidedAt ? loan.decidedAt.toISOString() : null,
     decidedBy: loan.decidedBy ? loan.decidedBy.toString() : null,

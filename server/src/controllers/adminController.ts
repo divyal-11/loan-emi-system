@@ -39,6 +39,7 @@ function formatLoan(loan: HydratedDocument<ILoanApplication>): Record<string, un
     interestRate: loan.interestRate,
     purpose: loan.purpose,
     status: loan.status,
+    rejectionReason: loan.rejectionReason || null,
     appliedAt: loan.appliedAt.toISOString(),
     decidedAt: loan.decidedAt ? loan.decidedAt.toISOString() : null,
     decidedBy: loan.decidedBy ? loan.decidedBy.toString() : null,
@@ -176,6 +177,7 @@ export const reject = asyncHandler(async (req: Request, res: Response): Promise<
   const actorId = req.user!.id as string;
 
   loan.status = "REJECTED";
+  loan.rejectionReason = reason || null;
   loan.decidedAt = new Date();
   loan.decidedBy = new mongoose.Types.ObjectId(actorId);
   await loan.save();

@@ -174,6 +174,7 @@ async function seed() {
     interestRate: 12.0,
     purpose: "Luxury vehicle purchase",
     status: "REJECTED",
+    rejectionReason: "Debt-to-income ratio exceeds policy limits.",
     appliedAt: appliedDate3,
     decidedAt: decidedDate3,
     decidedBy: adminUser._id,
