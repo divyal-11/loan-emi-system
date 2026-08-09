@@ -21,12 +21,20 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
   if (!isOpen) return null;
 
   // Real-time EMI estimation (12% annual rate = 1% monthly)
-  const r = (12 / 12) / 100;
+  const rateAnnual = 12.0;
+  const r = rateAnnual / 12 / 100;
   const n = tenureMonths;
+  
   const estimatedEmi =
     amount > 0 && n > 0
       ? Math.round((amount * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1))
       : 0;
+
+  const totalPayment = estimatedEmi * n;
+  const totalInterest = Math.max(0, totalPayment - amount);
+
+  const principalPercentage = totalPayment > 0 ? Math.round((amount / totalPayment) * 100) : 100;
+  const interestPercentage = 100 - principalPercentage;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,85 +77,99 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in font-sans">
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden text-slate-100 border-emerald-500/20">
         
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/40">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20">
-              <Calculator className="w-5 h-5" />
+        {/* Groww-style Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800 bg-slate-950/60">
+          <div className="flex items-center space-x-3">
+            <div className="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20 shadow-md shadow-emerald-950/40">
+              <Calculator className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-semibold text-lg text-white">Apply for a New Loan</h3>
-              <p className="text-xs text-slate-400">Fixed 12% p.a. interest rate</p>
+              <h3 className="font-bold text-xl text-white tracking-tight">EMI Loan Calculator</h3>
+              <p className="text-xs text-emerald-400 font-mono">12.0% p.a. Fixed Interest Rate</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
           
           {error && (
-            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm flex items-start space-x-3">
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm flex items-start space-x-3">
               <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
-          {/* Amount Input */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Loan Amount (₹1,000 – ₹5,00,000)
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                <IndianRupee className="w-4 h-4" />
+          {/* Groww-style Slider 1: Loan Amount */}
+          <div className="space-y-3 bg-slate-950/50 p-4 rounded-2xl border border-slate-800/80">
+            <div className="flex justify-between items-center">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Loan Amount
+              </label>
+              <div className="flex items-center space-x-1 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                <IndianRupee className="w-4 h-4 text-emerald-400" />
+                <span className="font-bold font-mono text-emerald-300 text-lg">
+                  {amount.toLocaleString("en-IN")}
+                </span>
               </div>
-              <input
-                type="number"
-                min={1000}
-                max={500000}
-                step={1000}
-                required
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
-                className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm font-mono"
-              />
+            </div>
+            <input
+              type="range"
+              min={10000}
+              max={500000}
+              step={5000}
+              value={amount}
+              onChange={(e) => setAmount(Number(e.target.value))}
+              className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+            />
+            <div className="flex justify-between text-[11px] font-mono text-slate-500">
+              <span>₹10,000</span>
+              <span>₹2,50,000</span>
+              <span>₹5,00,000</span>
             </div>
           </div>
 
-          {/* Tenure Input */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Tenure (3 – 60 Months)
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                <Calendar className="w-4 h-4" />
+          {/* Groww-style Slider 2: Tenure Months */}
+          <div className="space-y-3 bg-slate-950/50 p-4 rounded-2xl border border-slate-800/80">
+            <div className="flex justify-between items-center">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Tenure (Months)
+              </label>
+              <div className="flex items-center space-x-1 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                <Calendar className="w-4 h-4 text-emerald-400" />
+                <span className="font-bold font-mono text-emerald-300 text-lg">
+                  {tenureMonths} Months
+                </span>
               </div>
-              <select
-                value={tenureMonths}
-                onChange={(e) => setTenureMonths(Number(e.target.value))}
-                className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm font-mono"
-              >
-                {[3, 6, 12, 18, 24, 36, 48, 60].map((m) => (
-                  <option key={m} value={m}>
-                    {m} Months ({m / 12 >= 1 ? `${m / 12} Yr` : `${m} Mo`})
-                  </option>
-                ))}
-              </select>
+            </div>
+            <input
+              type="range"
+              min={3}
+              max={60}
+              step={3}
+              value={tenureMonths}
+              onChange={(e) => setTenureMonths(Number(e.target.value))}
+              className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+            />
+            <div className="flex justify-between text-[11px] font-mono text-slate-500">
+              <span>3 Mo</span>
+              <span>12 Mo (1 Yr)</span>
+              <span>36 Mo (3 Yrs)</span>
+              <span>60 Mo (5 Yrs)</span>
             </div>
           </div>
 
           {/* Purpose Input */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
               Loan Purpose
             </label>
             <div className="relative">
@@ -160,46 +182,76 @@ export function ApplyLoanModal({ isOpen, onClose, onSuccess }: ApplyLoanModalPro
                 required
                 value={purpose}
                 onChange={(e) => setPurpose(e.target.value)}
-                className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                placeholder="e.g. Home renovation, Laptop purchase..."
+                className="block w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-2xl text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                placeholder="e.g. Home renovation, business expansion..."
               />
             </div>
           </div>
 
-          {/* Real-time Calculator Box */}
-          <div className="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/20 text-indigo-200 flex justify-between items-center">
-            <div>
-              <span className="text-xs uppercase tracking-wider text-indigo-400 font-semibold block">
-                Estimated Monthly EMI
-              </span>
-              <span className="text-xs text-indigo-300/80">
-                @ 12% p.a. fixed interest rate
-              </span>
+          {/* Groww-style Breakdown Box & Visual Progress Bar */}
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-950/40 via-slate-950 to-slate-950 border border-emerald-500/25 space-y-4 shadow-xl">
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="text-xs uppercase tracking-wider text-emerald-400 font-bold block font-mono">
+                  Monthly Payment (EMI)
+                </span>
+                <span className="text-xs text-slate-400">
+                  Principal + Interest @ 12% p.a.
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-3xl font-extrabold font-mono text-emerald-400">
+                  ₹{estimatedEmi.toLocaleString("en-IN")}
+                </span>
+                <span className="text-xs text-slate-400 block font-mono">/ month</span>
+              </div>
             </div>
-            <div className="text-right">
-              <span className="text-2xl font-bold font-mono text-indigo-300">
-                ₹{estimatedEmi.toLocaleString()}
-              </span>
-              <span className="text-xs text-indigo-400 block">/ month</span>
+
+            {/* Principal vs Interest Breakdown Stats */}
+            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80 text-xs">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                <span className="text-slate-400">Principal:</span>
+                <span className="font-bold font-mono text-white">₹{amount.toLocaleString("en-IN")}</span>
+              </div>
+              <div className="flex items-center space-x-2 justify-end">
+                <div className="w-3 h-3 rounded-full bg-cyan-400" />
+                <span className="text-slate-400">Total Interest:</span>
+                <span className="font-bold font-mono text-cyan-300">₹{totalInterest.toLocaleString("en-IN")}</span>
+              </div>
+            </div>
+
+            {/* Groww Progress Bar */}
+            <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden flex">
+              <div
+                style={{ width: `${principalPercentage}%` }}
+                className="bg-emerald-400 h-full transition-all duration-300"
+                title={`Principal: ${principalPercentage}%`}
+              />
+              <div
+                style={{ width: `${interestPercentage}%` }}
+                className="bg-cyan-400 h-full transition-all duration-300"
+                title={`Interest: ${interestPercentage}%`}
+              />
             </div>
           </div>
 
           {/* Submit Action */}
-          <div className="flex justify-end space-x-3 pt-2">
+          <div className="flex justify-end space-x-3 pt-1">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl border border-slate-800 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-colors"
+              className="px-5 py-2.5 rounded-2xl border border-slate-800 text-slate-300 hover:bg-slate-800 text-sm font-medium transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50 flex items-center space-x-2"
+              className="px-6 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-950/60 transition-all disabled:opacity-50 flex items-center space-x-2 hover:scale-[1.02]"
             >
-              <CheckCircle className="w-4 h-4" />
-              <span>{isSubmitting ? "Submitting..." : "Submit Application"}</span>
+              <CheckCircle className="w-4 h-4 text-slate-950" />
+              <span>{isSubmitting ? "Submitting..." : "Apply Now"}</span>
             </button>
           </div>
 
