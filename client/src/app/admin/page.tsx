@@ -97,19 +97,19 @@ export default function AdminDashboardPage() {
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
-      <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen bg-black text-zinc-100 p-4 sm:p-6 lg:p-8 font-sans selection:bg-red-500/30 selection:text-red-200">
         <div className="max-w-7xl mx-auto space-y-8">
           
           {/* Top Hero / Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 p-6 rounded-2xl border border-amber-500/20 shadow-xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-red-950/40 via-zinc-900 to-zinc-950 p-6 rounded-2xl border border-red-500/20 shadow-2xl shadow-red-950/20">
             <div>
               <div className="flex items-center space-x-2">
-                <ShieldAlert className="w-6 h-6 text-amber-400" />
+                <ShieldAlert className="w-6 h-6 text-red-500" />
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   Admin Console
                 </h1>
               </div>
-              <p className="text-slate-400 text-sm mt-1">
+              <p className="text-zinc-400 text-sm mt-1">
                 Review pending loan applications, disburse funds, and inspect audit trails.
               </p>
             </div>
@@ -117,9 +117,9 @@ export default function AdminDashboardPage() {
             <button
               onClick={fetchPendingLoans}
               disabled={isLoading}
-              className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-sm border border-slate-700 transition-all shrink-0"
+              className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-medium text-sm border border-zinc-800 transition-all shrink-0 hover:border-red-500/30"
             >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-4 h-4 text-red-400 ${isLoading ? "animate-spin" : ""}`} />
               <span>Refresh Queue</span>
             </button>
           </div>
@@ -127,12 +127,12 @@ export default function AdminDashboardPage() {
           {/* Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
-            <div className="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 flex items-center space-x-4">
-              <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+            <div className="bg-zinc-900/90 p-5 rounded-2xl border border-zinc-800 flex items-center space-x-4 hover:border-red-500/30 transition-all shadow-lg">
+              <div className="p-3 bg-red-500/10 text-red-400 rounded-xl border border-red-500/20">
                 <Clock className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs uppercase font-mono text-slate-400 block">
+                <span className="text-xs uppercase font-mono text-zinc-400 block tracking-wider">
                   Pending Approval Queue
                 </span>
                 <span className="text-2xl font-bold font-mono text-white">
@@ -141,12 +141,12 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 flex items-center space-x-4">
-              <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/20">
+            <div className="bg-zinc-900/90 p-5 rounded-2xl border border-zinc-800 flex items-center space-x-4 hover:border-red-500/30 transition-all shadow-lg">
+              <div className="p-3 bg-red-500/10 text-red-400 rounded-xl border border-red-500/20">
                 <IndianRupee className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs uppercase font-mono text-slate-400 block">
+                <span className="text-xs uppercase font-mono text-zinc-400 block tracking-wider">
                   Total Pending Volume
                 </span>
                 <span className="text-2xl font-bold font-mono text-white">
@@ -166,38 +166,38 @@ export default function AdminDashboardPage() {
           )}
 
           {error && (
-            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm flex items-start space-x-3">
+              <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           {/* Pending Applications Queue */}
-          <div className="bg-slate-900/80 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
-            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+          <div className="bg-zinc-900/90 rounded-2xl border border-zinc-800 overflow-hidden shadow-2xl">
+            <div className="px-6 py-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/50">
               <h2 className="font-semibold text-lg text-white">Pending Approval Queue</h2>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-zinc-400">
                 {pendingLoans.length} items requiring decision
               </span>
             </div>
 
             {isLoading ? (
-              <div className="py-20 flex flex-col items-center justify-center text-slate-400">
-                <Loader2 className="w-8 h-8 animate-spin text-amber-500 mb-2" />
+              <div className="py-20 flex flex-col items-center justify-center text-zinc-400">
+                <Loader2 className="w-8 h-8 animate-spin text-red-500 mb-2" />
                 <p className="text-sm font-medium">Loading queue...</p>
               </div>
             ) : pendingLoans.length === 0 ? (
-              <div className="py-16 text-center text-slate-400">
+              <div className="py-16 text-center text-zinc-400">
                 <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2 opacity-80" />
                 <p className="text-base font-medium text-white">Queue is clear!</p>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-zinc-500 mt-1">
                   There are currently no pending loan applications requiring admin decision.
                 </p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-300">
-                  <thead className="bg-slate-950/60 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 font-mono">
+                <table className="w-full text-left text-sm text-zinc-300">
+                  <thead className="bg-zinc-950/80 text-xs uppercase tracking-wider text-zinc-400 border-b border-zinc-800 font-mono">
                     <tr>
                       <th className="px-6 py-3.5">Loan ID</th>
                       <th className="px-6 py-3.5">Applicant ID</th>
@@ -208,28 +208,28 @@ export default function AdminDashboardPage() {
                       <th className="px-6 py-3.5 text-right">Admin Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60">
+                  <tbody className="divide-y divide-zinc-800/60">
                     {pendingLoans.map((loan) => {
                       const isProcessingThis = processingId === loan.id;
 
                       return (
-                        <tr key={loan.id} className="hover:bg-slate-900/50 transition-colors">
-                          <td className="px-6 py-4 font-mono text-xs text-amber-400 font-medium">
+                        <tr key={loan.id} className="hover:bg-zinc-900/80 transition-colors">
+                          <td className="px-6 py-4 font-mono text-xs text-red-400 font-medium">
                             {loan.id.substring(0, 10)}...
                           </td>
-                          <td className="px-6 py-4 font-mono text-xs text-slate-400">
+                          <td className="px-6 py-4 font-mono text-xs text-zinc-400">
                             {loan.applicantId.substring(0, 10)}...
                           </td>
-                          <td className="px-6 py-4 font-mono font-bold text-white">
+                          <td className="px-6 py-4 font-mono font-bold text-white text-base">
                             ₹{loan.amount.toLocaleString("en-IN")}
                           </td>
-                          <td className="px-6 py-4 font-mono text-slate-300">
+                          <td className="px-6 py-4 font-mono text-zinc-300">
                             {loan.tenureMonths} Months
                           </td>
-                          <td className="px-6 py-4 text-slate-300 max-w-xs truncate">
+                          <td className="px-6 py-4 text-zinc-300 max-w-xs truncate">
                             {loan.purpose}
                           </td>
-                          <td className="px-6 py-4 font-mono text-xs text-slate-400">
+                          <td className="px-6 py-4 font-mono text-xs text-zinc-400">
                             {new Date(loan.appliedAt).toLocaleDateString("en-IN", {
                               day: "2-digit",
                               month: "short",
@@ -242,7 +242,7 @@ export default function AdminDashboardPage() {
                               {/* Audit Trail Button */}
                               <button
                                 onClick={() => setAuditLoanId(loan.id)}
-                                className="p-2 text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors"
+                                className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors"
                                 title="View Audit Trail"
                               >
                                 <History className="w-4 h-4" />
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
                               <button
                                 onClick={() => setRejectingLoanId(loan.id)}
                                 disabled={isProcessingThis}
-                                className="px-3 py-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 font-medium text-xs transition-all disabled:opacity-50 flex items-center space-x-1"
+                                className="px-3.5 py-1.5 rounded-xl bg-red-950/60 hover:bg-red-900/80 text-red-300 border border-red-500/40 font-medium text-xs transition-all disabled:opacity-50 flex items-center space-x-1 shadow-md shadow-red-950"
                               >
                                 <XCircle className="w-3.5 h-3.5" />
                                 <span>Reject</span>
@@ -262,7 +262,7 @@ export default function AdminDashboardPage() {
                               <button
                                 onClick={() => handleApprove(loan.id)}
                                 disabled={isProcessingThis}
-                                className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-950 transition-all disabled:opacity-50 flex items-center space-x-1"
+                                className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-950 transition-all disabled:opacity-50 flex items-center space-x-1"
                               >
                                 {isProcessingThis ? (
                                   <Loader2 className="w-3.5 h-3.5 animate-spin" />

@@ -21,20 +21,20 @@ export function Navbar() {
   const isAdmin = user.role === "admin";
 
   return (
-    <nav className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 text-slate-100">
+    <nav className="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+            <div className="p-2 bg-red-600/20 text-red-500 rounded-xl border border-red-500/30 shadow-lg shadow-red-950/50">
               <Landmark className="w-6 h-6" />
             </div>
             <div>
-              <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
+              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-zinc-200 to-red-400 bg-clip-text text-transparent">
                 LoanFlex
               </span>
-              <span className="text-xs block text-slate-400 font-mono">EMI System</span>
+              <span className="text-xs block text-zinc-400 font-mono tracking-wider">CRIMSON EDITION</span>
             </div>
           </div>
 
@@ -43,39 +43,39 @@ export function Navbar() {
             {!isAdmin ? (
               <Link
                 href="/dashboard"
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
                   pathname === "/dashboard"
-                    ? "bg-indigo-600/20 text-indigo-300 border border-indigo-500/30"
-                    : "text-slate-300 hover:text-white hover:bg-slate-800"
+                    ? "bg-red-600/20 text-red-300 border border-red-500/40 shadow-md shadow-red-950"
+                    : "text-zinc-300 hover:text-white hover:bg-zinc-900"
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4" />
+                <LayoutDashboard className="w-4 h-4 text-red-400" />
                 <span>My Dashboard</span>
               </Link>
             ) : (
               <Link
                 href="/admin"
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
                   pathname === "/admin"
-                    ? "bg-amber-600/20 text-amber-300 border border-amber-500/30"
-                    : "text-slate-300 hover:text-white hover:bg-slate-800"
+                    ? "bg-red-600/20 text-red-300 border border-red-500/40 shadow-md shadow-red-950"
+                    : "text-zinc-300 hover:text-white hover:bg-zinc-900"
                 }`}
               >
-                <ShieldAlert className="w-4 h-4" />
+                <ShieldAlert className="w-4 h-4 text-red-400" />
                 <span>Admin Console</span>
               </Link>
             )}
 
             {/* User Profile Badge */}
-            <div className="flex items-center space-x-3 pl-4 border-l border-slate-800">
-              <div className="flex items-center space-x-2 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700">
-                <User className="w-4 h-4 text-slate-400" />
-                <span className="text-sm font-medium text-slate-200">{user.name}</span>
+            <div className="flex items-center space-x-3 pl-4 border-l border-zinc-800">
+              <div className="flex items-center space-x-2 bg-zinc-900/90 px-3 py-1.5 rounded-full border border-zinc-800">
+                <User className="w-4 h-4 text-red-400" />
+                <span className="text-sm font-semibold text-zinc-100">{user.name}</span>
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full uppercase font-mono font-semibold ${
+                  className={`text-[10px] px-2 py-0.5 rounded-full uppercase font-mono font-bold tracking-wider ${
                     isAdmin
-                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                      : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                      ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                      : "bg-zinc-800 text-zinc-300 border border-zinc-700"
                   }`}
                 >
                   {user.role}
@@ -85,7 +85,7 @@ export function Navbar() {
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
                 title="Log out"
               >
                 <LogOut className="w-5 h-5" />
