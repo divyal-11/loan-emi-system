@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { api, ApiError } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import { generatePaymentReceipt } from "../../lib/pdfGenerator";
@@ -31,6 +32,7 @@ export function RepaymentScheduleModal({
   onClose,
   onLoanUpdated,
 }: RepaymentScheduleModalProps) {
+  const router = useRouter();
   const { user } = useAuth();
   const [repayments, setRepayments] = useState<RepaymentItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -210,7 +212,12 @@ export function RepaymentScheduleModal({
                         <td className="px-5 py-4 text-right">
                           {!isPaid ? (
                             <button
-                              onClick={() => openCheckoutSheet(rep)}
+                              onClick={() => {
+                                onClose();
+                                router.push(
+                                  `/checkout?loanId=${rep.loanId}&repaymentId=${rep.id}&amount=${rep.totalAmount}&emiNumber=${rep.emiNumber}&principal=${rep.principalComponent}&interest=${rep.interestComponent}`
+                                );
+                              }}
                               className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-950 transition-all hover:scale-[1.02]"
                             >
                               <IndianRupee className="w-3.5 h-3.5" />
