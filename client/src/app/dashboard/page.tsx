@@ -197,90 +197,89 @@ export default function BorrowerDashboardPage() {
 
           </div>
 
-          {/* Visual Analytics Card for Borrower */}
-          {repayments.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Repayment Progress Card */}
-              <div className="lg:col-span-2 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-indigo-400" />
-                    <h3 className="text-sm font-bold text-slate-200">Active Repayment Progress & Credit Summary</h3>
+          {/* Option B: Full-Width Detailed Active Repayment Progress Tracker */}
+          {repayments.length > 0 && activeLoan && (
+            <div className="bg-slate-900 p-6 sm:p-7 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-2xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30">
+                    <TrendingUp className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                    {paidPercentage}% Complete
+                  <div>
+                    <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                      Active Credit Repayment Progress
+                      <span className="text-xs font-mono text-indigo-400 font-bold bg-indigo-500/10 px-2.5 py-0.5 rounded-full border border-indigo-500/20">
+                        LFL-{activeLoan.id.substring(0, 8).toUpperCase()}
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-400 font-medium">
+                      Sanctioned Amount: ₹{activeLoan.amount.toLocaleString("en-IN")} @ {activeLoan.interestRate}% p.a. Fixed
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20">
+                    {paidPercentage}% Repaid
                   </span>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Total Capital Repaid</span>
-                    <span className="font-bold font-mono text-indigo-400">
-                      ₹{Math.round(totalPaid).toLocaleString("en-IN")} / ₹{Math.round(totalExpected).toLocaleString("en-IN")}
-                    </span>
-                  </div>
-                  <div className="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                    <div
-                      className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full transition-all duration-500"
-                      style={{ width: `${paidPercentage}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-2 text-xs">
-                  <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
-                    <span className="text-slate-400 block">Principal Repaid</span>
-                    <span className="text-sm font-bold text-indigo-300">₹{Math.round(totalPaidPrincipal).toLocaleString("en-IN")}</span>
-                  </div>
-                  <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
-                    <span className="text-slate-400 block">Interest Component</span>
-                    <span className="text-sm font-bold text-emerald-400">₹{Math.round(totalPaidInterest).toLocaleString("en-IN")}</span>
-                  </div>
+                  {user && (
+                    <button
+                      onClick={() => generateSanctionLetter(activeLoan, user)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold rounded-xl border border-slate-700 transition-colors"
+                      title="Download Official Sanction Certificate PDF"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Sanction Letter PDF</span>
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {/* Principal vs Interest Donut Chart */}
-              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
-                <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-                  <PieIcon className="w-5 h-5 text-indigo-400" />
-                  <h3 className="text-sm font-bold text-slate-200">Principal vs Interest Split</h3>
+              {/* Big Detailed Progress Indicator Bar */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between text-xs font-mono font-bold">
+                  <span className="text-slate-400 font-sans font-medium">Total Capital Repaid to Date</span>
+                  <span className="text-indigo-400 text-sm">
+                    ₹{Math.round(totalPaid).toLocaleString("en-IN")} / ₹{Math.round(totalExpected).toLocaleString("en-IN")}
+                  </span>
+                </div>
+                <div className="w-full bg-slate-950 h-3.5 rounded-full p-0.5 border border-slate-800 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-indigo-500 via-indigo-400 to-emerald-400 h-full rounded-full transition-all duration-700 shadow-md shadow-indigo-500/30"
+                    style={{ width: `${paidPercentage}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* 4-Grid Detailed Financial Breakdown */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="p-4 bg-slate-950/70 rounded-2xl border border-slate-800/80 space-y-1">
+                  <span className="text-xs font-medium text-slate-400 block">Principal Repaid</span>
+                  <span className="text-base font-extrabold text-indigo-300 font-mono">
+                    ₹{Math.round(totalPaidPrincipal).toLocaleString("en-IN")}
+                  </span>
                 </div>
 
-                {borrowerPieData.length === 0 ? (
-                  <div className="h-44 flex items-center justify-center text-slate-500 text-xs">
-                    Make your first EMI payment to view split graph.
-                  </div>
-                ) : (
-                  <div className="h-44 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={borrowerPieData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={45}
-                          outerRadius={65}
-                          paddingAngle={5}
-                          dataKey="value"
-                        >
-                          {borrowerPieData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                          formatter={(val: any) => `₹${Number(val || 0).toLocaleString("en-IN")}`}
-                          contentStyle={{
-                            backgroundColor: "#0f172a",
-                            borderColor: "#334155",
-                            borderRadius: "12px",
-                            color: "#f8fafc",
-                            fontSize: "12px",
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
+                <div className="p-4 bg-slate-950/70 rounded-2xl border border-slate-800/80 space-y-1">
+                  <span className="text-xs font-medium text-slate-400 block">Interest Component Paid</span>
+                  <span className="text-base font-extrabold text-emerald-400 font-mono">
+                    ₹{Math.round(totalPaidInterest).toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <div className="p-4 bg-slate-950/70 rounded-2xl border border-slate-800/80 space-y-1">
+                  <span className="text-xs font-medium text-slate-400 block">Outstanding Balance</span>
+                  <span className="text-base font-extrabold text-amber-400 font-mono">
+                    ₹{Math.max(0, Math.round(totalExpected - totalPaid)).toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <div className="p-4 bg-slate-950/70 rounded-2xl border border-slate-800/80 space-y-1">
+                  <span className="text-xs font-medium text-slate-400 block">Installments Progress</span>
+                  <span className="text-base font-extrabold text-slate-100 font-mono">
+                    {repayments.filter((r) => r.status === "PAID").length} of {repayments.length} EMIs
+                  </span>
+                </div>
               </div>
             </div>
           )}
