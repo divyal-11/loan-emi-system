@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
 import { ApplyLoanModal } from "../../components/borrower/ApplyLoanModal";
-import { RepaymentScheduleModal } from "../../components/borrower/RepaymentScheduleModal";
+import { RepaymentScheduleModal, RepaymentItem } from "../../components/borrower/RepaymentScheduleModal";
 import { api, ApiError } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import { generateSanctionLetter } from "../../lib/pdfGenerator";
@@ -21,7 +21,11 @@ import {
   CreditCard,
   Building,
   Download,
+  PieChart as PieIcon,
+  TrendingUp,
+  ShieldCheck,
 } from "lucide-react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 export interface LoanItem {
   id: string;
@@ -40,6 +44,7 @@ export interface LoanItem {
 export default function BorrowerDashboardPage() {
   const { user } = useAuth();
   const [loans, setLoans] = useState<LoanItem[]>([]);
+  const [repayments, setRepayments] = useState<RepaymentItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,6 +58,16 @@ export default function BorrowerDashboardPage() {
     try {
       const data = await api.get<LoanItem[]>("/loans/mine");
       setLoans(data);
+
+      const activeDisbursed = data.find((l) => l.status === "DISBURSED" || l.status === "CLOSED");
+      if (activeDisbursed) {
+        try {
+          const repData = await api.get<RepaymentItem[]>(`/repayments/${activeDisbursed.id}`);
+          setRepayments(repData);
+        } catch {
+          setRepayments([]);
+        }
+      }
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setError(err.message);
@@ -75,6 +90,24 @@ export default function BorrowerDashboardPage() {
   const totalBorrowed = loans
     .filter((l) => ["DISBURSED", "CLOSED"].includes(l.status))
     .reduce((sum, l) => sum + l.amount, 0);
+
+  // Amortization Chart Data for Active Loan
+  const totalPaidPrincipal = repayments
+    .filter((r) => r.status === "PAID")
+    .reduce((sum, r) => sum + r.principalComponent, 0);
+
+  const totalPaidInterest = repayments
+    .filter((r) => r.status === "PAID")
+    .reduce((sum, r) => sum + r.interestComponent, 0);
+
+  const totalPaid = totalPaidPrincipal + totalPaidInterest;
+  const totalExpected = repayments.reduce((sum, r) => sum + r.totalAmount, 0);
+  const paidPercentage = totalExpected > 0 ? Math.round((totalPaid / totalExpected) * 100) : 0;
+
+  const borrowerPieData = [
+    { name: "Principal Repaid", value: Math.round(totalPaidPrincipal), color: "#6366f1" },
+    { name: "Interest Component", value: Math.round(totalPaidInterest), color: "#10b981" },
+  ].filter((item) => item.value > 0);
 
   return (
     <ProtectedRoute allowedRoles={["borrower"]}>
@@ -164,6 +197,94 @@ export default function BorrowerDashboardPage() {
 
           </div>
 
+          {/* Visual Analytics Card for Borrower */}
+          {repayments.length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Repayment Progress Card */}
+              <div className="lg:col-span-2 bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-indigo-400" />
+                    <h3 className="text-sm font-bold text-slate-200">Active Repayment Progress & Credit Summary</h3>
+                  </div>
+                  <span className="text-xs font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                    {paidPercentage}% Complete
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-400">Total Capital Repaid</span>
+                    <span className="font-bold font-mono text-indigo-400">
+                      ₹{Math.round(totalPaid).toLocaleString("en-IN")} / ₹{Math.round(totalExpected).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                    <div
+                      className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full transition-all duration-500"
+                      style={{ width: `${paidPercentage}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-2 text-xs">
+                  <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                    <span className="text-slate-400 block">Principal Repaid</span>
+                    <span className="text-sm font-bold text-indigo-300">₹{Math.round(totalPaidPrincipal).toLocaleString("en-IN")}</span>
+                  </div>
+                  <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                    <span className="text-slate-400 block">Interest Component</span>
+                    <span className="text-sm font-bold text-emerald-400">₹{Math.round(totalPaidInterest).toLocaleString("en-IN")}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Principal vs Interest Donut Chart */}
+              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+                <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+                  <PieIcon className="w-5 h-5 text-indigo-400" />
+                  <h3 className="text-sm font-bold text-slate-200">Principal vs Interest Split</h3>
+                </div>
+
+                {borrowerPieData.length === 0 ? (
+                  <div className="h-44 flex items-center justify-center text-slate-500 text-xs">
+                    Make your first EMI payment to view split graph.
+                  </div>
+                ) : (
+                  <div className="h-44 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={borrowerPieData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={45}
+                          outerRadius={65}
+                          paddingAngle={5}
+                          dataKey="value"
+                        >
+                          {borrowerPieData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(val: any) => `₹${Number(val || 0).toLocaleString("en-IN")}`}
+                          contentStyle={{
+                            backgroundColor: "#0f172a",
+                            borderColor: "#334155",
+                            borderRadius: "12px",
+                            color: "#f8fafc",
+                            fontSize: "12px",
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Error Notice */}
           {error && (
             <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-sm flex items-start space-x-3">
@@ -179,160 +300,136 @@ export default function BorrowerDashboardPage() {
                 <h2 className="font-extrabold text-lg text-white">My Loan Applications</h2>
                 <p className="text-xs text-slate-400 font-medium">Historical & active credit submissions</p>
               </div>
-              <span className="text-xs font-mono text-indigo-300 bg-indigo-600/20 px-3 py-1 rounded-full border border-indigo-500/30 font-bold">
-                {loans.length} Records
-              </span>
             </div>
 
             {isLoading ? (
-              <div className="py-20 flex flex-col items-center justify-center text-slate-400">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-500 mb-2" />
-                <p className="text-sm font-medium">Loading applications...</p>
+              <div className="p-12 text-center text-slate-400 space-y-3">
+                <Loader2 className="w-8 h-8 animate-spin text-indigo-500 mx-auto" />
+                <p className="text-sm font-medium">Fetching credit records...</p>
               </div>
             ) : loans.length === 0 ? (
-              <div className="py-16 text-center text-slate-400">
-                <p className="text-base font-medium text-slate-300">No loan applications found.</p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Click &quot;Apply for New Loan&quot; above to submit your first application.
-                </p>
+              <div className="p-16 text-center space-y-4">
+                <Building className="w-12 h-12 text-slate-600 mx-auto" />
+                <div>
+                  <h3 className="text-base font-bold text-slate-200">No Loan Applications Found</h3>
+                  <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+                    You haven't submitted any loan requests yet. Click the button above to calculate EMIs and apply.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsApplyModalOpen(true)}
+                  className="inline-flex items-center space-x-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  <span>Apply Now</span>
+                </button>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-200">
-                  <thead className="bg-slate-950 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800 font-mono">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead className="bg-slate-950/40 text-slate-400 uppercase text-[10px] sm:text-xs tracking-wider border-b border-slate-800">
                     <tr>
-                      <th className="px-6 py-4">Loan ID</th>
+                      <th className="px-6 py-4">Loan Reference</th>
                       <th className="px-6 py-4">Amount</th>
-                      <th className="px-6 py-4">Tenure</th>
+                      <th className="px-6 py-4">Tenure & Rate</th>
                       <th className="px-6 py-4">Purpose</th>
                       <th className="px-6 py-4">Status</th>
-                      <th className="px-6 py-4">Applied On</th>
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/80">
-                    {loans.map((loan) => {
-                      return (
-                        <React.Fragment key={loan.id}>
-                          <tr className="hover:bg-slate-800/50 transition-colors">
-                            <td className="px-6 py-4 font-mono text-xs text-indigo-400 font-bold">
-                              {loan.id.substring(0, 10)}...
-                            </td>
-                            <td className="px-6 py-4 font-mono font-extrabold text-white text-base">
-                              ₹{loan.amount.toLocaleString("en-IN")}
-                            </td>
-                            <td className="px-6 py-4 font-mono text-slate-300 font-medium">
-                              {loan.tenureMonths} Months
-                            </td>
-                            <td className="px-6 py-4 text-slate-300 max-w-xs truncate font-medium">
-                              {loan.purpose}
-                            </td>
-                            <td className="px-6 py-4">
-                              {loan.status === "PENDING" && (
-                                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                                  <Clock className="w-3.5 h-3.5 text-amber-400" />
-                                  <span>PENDING</span>
-                                </span>
-                              )}
-                              {loan.status === "DISBURSED" && (
-                                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                                  <span>DISBURSED</span>
-                                </span>
-                              )}
-                              {loan.status === "CLOSED" && (
-                                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">
-                                  <FileCheck className="w-3.5 h-3.5 text-slate-400" />
-                                  <span>CLOSED</span>
-                                </span>
-                              )}
-                              {loan.status === "REJECTED" && (
-                                <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
-                                  <XCircle className="w-3.5 h-3.5 text-rose-400" />
-                                  <span>REJECTED</span>
-                                </span>
-                              )}
-                            </td>
-                            <td className="px-6 py-4 font-mono text-xs text-slate-400 font-medium">
-                              {new Date(loan.appliedAt).toLocaleDateString("en-IN", {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              })}
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              {["DISBURSED", "CLOSED"].includes(loan.status) ? (
-                                <div className="flex items-center justify-end space-x-2">
-                                  <button
-                                    onClick={() => user && generateSanctionLetter(loan, user)}
-                                    className="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs transition-colors"
-                                    title="Download Sanction Letter PDF"
-                                  >
-                                    <Download className="w-3.5 h-3.5 text-indigo-400" />
-                                    <span>Sanction Letter</span>
-                                  </button>
-                                  <button
-                                    onClick={() => setSelectedLoanIdForSchedule(loan.id)}
-                                    className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-950 transition-all hover:scale-[1.02]"
-                                  >
-                                    <Eye className="w-3.5 h-3.5" />
-                                    <span>Schedule & Pay</span>
-                                  </button>
-                                </div>
-                              ) : (
-                                <span className="text-xs text-slate-500 font-mono">—</span>
-                              )}
-                            </td>
-                          </tr>
+                  <tbody className="divide-y divide-slate-800/60 text-slate-300 font-medium">
+                    {loans.map((loan) => (
+                      <tr key={loan.id} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="font-mono text-xs text-indigo-400 font-bold">
+                            LFL-{loan.id.substring(0, 8).toUpperCase()}
+                          </div>
+                          <div className="text-[11px] text-slate-500 mt-0.5">
+                            Applied {new Date(loan.appliedAt).toLocaleDateString("en-IN")}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 font-mono font-bold text-white text-base">
+                          ₹{loan.amount.toLocaleString("en-IN")}
+                        </td>
+                        <td className="px-6 py-4 text-slate-300">
+                          {loan.tenureMonths} Months @ {loan.interestRate}%
+                        </td>
+                        <td className="px-6 py-4 text-slate-400 max-w-xs truncate">
+                          {loan.purpose}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-extrabold border ${
+                              loan.status === "DISBURSED"
+                                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                                : loan.status === "PENDING"
+                                ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                                : loan.status === "CLOSED"
+                                ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20"
+                                : "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                            }`}
+                          >
+                            {loan.status === "DISBURSED" && <CheckCircle2 className="w-3.5 h-3.5" />}
+                            {loan.status === "PENDING" && <Clock className="w-3.5 h-3.5" />}
+                            {loan.status === "REJECTED" && <XCircle className="w-3.5 h-3.5" />}
+                            <span>{loan.status}</span>
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex items-center justify-end space-x-2">
+                            {["DISBURSED", "CLOSED"].includes(loan.status) && (
+                              <>
+                                <button
+                                  onClick={() => setSelectedLoanIdForSchedule(loan.id)}
+                                  className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-md transition-all active:scale-95"
+                                >
+                                  <CreditCard className="w-3.5 h-3.5 text-white" />
+                                  <span>Pay & View EMI Schedule</span>
+                                </button>
 
-                          {/* Decline Reason Notice Card */}
-                          {loan.status === "REJECTED" && (
-                            <tr className="bg-rose-950/30 border-b border-rose-500/30">
-                              <td colSpan={7} className="px-6 py-4">
-                                <div className="flex items-start space-x-3 p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs">
-                                  <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-                                  <div className="space-y-1">
-                                    <span className="font-extrabold text-rose-200 block text-xs tracking-wider uppercase font-mono">
-                                      Decline Reason Notice:
-                                    </span>
-                                    <p className="text-white font-bold text-sm">
-                                      &quot;{loan.rejectionReason || "Application did not meet internal credit risk & underwriting criteria."}&quot;
-                                    </p>
-                                    <p className="text-xs text-slate-300 font-medium">
-                                      If you have questions regarding this decision, please reach out to credit support.
-                                    </p>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
+                                <button
+                                  onClick={() => user && generateSanctionLetter(loan, user)}
+                                  className="p-2 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded-xl transition-colors"
+                                  title="Download Official Sanction Letter PDF"
+                                >
+                                  <Download className="w-4 h-4" />
+                                </button>
+                              </>
+                            )}
+
+                            {loan.status === "PENDING" && (
+                              <button
+                                onClick={() => setSelectedLoanIdForSchedule(loan.id)}
+                                className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700 transition-all"
+                              >
+                                <Eye className="w-3.5 h-3.5 text-slate-400" />
+                                <span>Inspect Status</span>
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             )}
-
           </div>
-
         </div>
 
-        {/* Apply Loan Modal */}
+        {/* Modals */}
         <ApplyLoanModal
           isOpen={isApplyModalOpen}
           onClose={() => setIsApplyModalOpen(false)}
           onSuccess={fetchMyLoans}
         />
 
-        {/* Schedule & Pay Modal */}
         <RepaymentScheduleModal
           loanId={selectedLoanIdForSchedule}
           isOpen={!!selectedLoanIdForSchedule}
           onClose={() => setSelectedLoanIdForSchedule(null)}
           onLoanUpdated={fetchMyLoans}
         />
-
       </div>
     </ProtectedRoute>
   );
