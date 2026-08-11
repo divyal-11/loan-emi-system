@@ -31,9 +31,38 @@ function addMonths(date: Date, months: number): Date {
 }
 
 function formatLoan(loan: HydratedDocument<ILoanApplication>): Record<string, unknown> {
+  const applicantIdStr = loan.applicantId ? String((loan.applicantId as any)._id || loan.applicantId) : "";
   return {
     id: loan._id.toString(),
-    applicantId: loan.applicantId.toString(),
+    applicantId: applicantIdStr,
+    amount: loan.amount,
+    tenureMonths: loan.tenureMonths,
+    interestRate: loan.interestRate,
+    purpose: loan.purpose,
+    status: loan.status,
+    rejectionReason: loan.rejectionReason || null,
+    appliedAt: loan.appliedAt.toISOString(),
+    decidedAt: loan.decidedAt ? loan.decidedAt.toISOString() : null,
+    decidedBy: loan.decidedBy ? loan.decidedBy.toString() : null,
+  };
+}
+
+function formatLoanWithApplicant(loan: any): Record<string, unknown> {
+  const applicantObj =
+    loan.applicantId && typeof loan.applicantId === "object" && "name" in loan.applicantId
+      ? {
+          id: loan.applicantId._id.toString(),
+          name: loan.applicantId.name,
+          email: loan.applicantId.email,
+        }
+      : null;
+
+  return {
+    id: loan._id.toString(),
+    applicantId: loan.applicantId && typeof loan.applicantId === "object" && "_id" in loan.applicantId
+      ? loan.applicantId._id.toString()
+      : String(loan.applicantId),
+    applicant: applicantObj,
     amount: loan.amount,
     tenureMonths: loan.tenureMonths,
     interestRate: loan.interestRate,
@@ -73,6 +102,71 @@ async function findLoanOrThrow(id: string): Promise<HydratedDocument<ILoanApplic
 }
 
 // ─── Handlers ─────────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/admin/loans/all — admin only
+ * Returns all loan applications (optional ?status= filter), populated with applicant name & email.
+ * Also returns system-wide metrics and status breakdown counts for visual charts.
+ */
+export const getAllLoans = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+  const statusFilter = req.query["status"] as string | undefined;
+
+  const query: Record<string, unknown> = {};
+  if (statusFilter && statusFilter !== "ALL") {
+    query["status"] = statusFilter;
+  }
+
+  const loans = await LoanApplication.find(query)
+    .populate("applicantId", "name email role")
+    .sort({ appliedAt: -1 });
+
+  // Calculate System Portfolio Stats
+  const allLoans = await LoanApplication.find();
+  const repayments = await Repayment.find();
+
+  let totalDisbursedVolume = 0;
+  let totalRepaymentsCollected = 0;
+
+  let pendingCount = 0;
+  let disbursedCount = 0;
+  let closedCount = 0;
+  let rejectedCount = 0;
+
+  allLoans.forEach((l) => {
+    if (l.status === "PENDING") pendingCount++;
+    else if (l.status === "DISBURSED") {
+      disbursedCount++;
+      totalDisbursedVolume += l.amount;
+    } else if (l.status === "CLOSED") {
+      closedCount++;
+      totalDisbursedVolume += l.amount;
+    } else if (l.status === "REJECTED") rejectedCount++;
+  });
+
+  repayments.forEach((r) => {
+    if (r.status === "PAID") {
+      totalRepaymentsCollected += r.totalAmount;
+    }
+  });
+
+  res.status(200).json({
+    success: true,
+    data: {
+      loans: loans.map(formatLoanWithApplicant),
+      metrics: {
+        totalLoans: allLoans.length,
+        totalDisbursedVolume,
+        totalRepaymentsCollected,
+        statusCounts: {
+          PENDING: pendingCount,
+          DISBURSED: disbursedCount,
+          CLOSED: closedCount,
+          REJECTED: rejectedCount,
+        },
+      },
+    },
+  });
+});
 
 /**
  * GET /api/admin/loans/pending — admin only

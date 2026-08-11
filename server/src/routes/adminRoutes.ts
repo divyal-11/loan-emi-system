@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { approve, reject, getPending, getAuditLogs, rejectSchema } from "../controllers/adminController";
+import { approve, reject, getPending, getAllLoans, getAuditLogs, rejectSchema } from "../controllers/adminController";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { roleMiddleware } from "../middleware/roleMiddleware";
 import { validateRequest } from "../middleware/validateRequest";
@@ -8,6 +8,9 @@ const router = Router();
 
 // All admin routes require a valid token AND admin role
 const adminGuard = [authMiddleware, roleMiddleware("admin")];
+
+// GET /api/admin/loans/all — list all loan applications (with optional status filter & metrics)
+router.get("/loans/all", ...adminGuard, getAllLoans);
 
 // GET /api/admin/loans/pending — list all PENDING applications
 router.get("/loans/pending", ...adminGuard, getPending);
